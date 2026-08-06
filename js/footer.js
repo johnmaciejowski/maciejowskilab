@@ -8,11 +8,13 @@
   el.innerHTML =
     '<address>' +
       '<strong>Maciejowski Lab</strong><br>' +
-      'Sloan Kettering Institute<br>' +
-      'Rockefeller Research Laboratories<br>' +
-      '430 East 67th Street, New York, NY 10065<br>' +
-      '<a href="tel:+13326996080">332-699-6080</a><br>' +
-      '<a href="mailto:maciejoj@mskcc.org">maciejoj@mskcc.org</a><br>' +
+      'Molecular Biology Program, Sloan Kettering Institute<br>' +
+      'Rockefeller Research Laboratories, Room 1161<br>' +
+      '430 East 67th Street<br>' +
+      'New York, NY 10065' +
+      '<br><br>' +
+      '<a href="mailto:maciejoj@mskcc.org">maciejoj@mskcc.org</a>' +
+      '<br><br>' +
       '<a href="https://www.instagram.com/maciejowskilab/">Instagram</a>' +
     '</address>';
 })();

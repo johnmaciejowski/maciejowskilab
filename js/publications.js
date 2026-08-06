@@ -1,44 +1,67 @@
-/* ===================================================================
-   SINGLE SOURCE OF TRUTH FOR PUBLICATIONS
-   The "Recent work" block on the home page and the full Publications
-   page both read from this one list, so adding a paper here updates
-   both. Keep the list NEWEST FIRST.
+/* Renders publications from window.PUBLICATIONS (see publications-data.js, which is
+   generated from publications.json at build time). One data source feeds both the
+   full Publications page and the "Recent work" block on the home page. */
+(function () {
+  var DATA = window.PUBLICATIONS;
 
-   Each entry: { authors, title, journal, year, url }
-     url = link to the paper (DOI or PubMed). Use "#" if none yet.
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
 
-   TODO: replace the placeholder entries below with real papers.
-   =================================================================== */
-window.PUBLICATIONS = [
-  { authors: "REPLACE — Author A, Author B, Maciejowski J",
-    title: "Most recent paper title goes here",
-    journal: "Journal", year: 2025, url: "#" },
-  { authors: "REPLACE — Author A, Author B, Maciejowski J",
-    title: "Second most recent paper title goes here",
-    journal: "Journal", year: 2025, url: "#" },
-  { authors: "REPLACE — Author A, Author B, Maciejowski J",
-    title: "Third most recent paper title goes here",
-    journal: "Journal", year: 2024, url: "#" }
-];
+  // Stable sort, most recent year first.
+  function byYearDesc(items) {
+    return items
+      .map(function (it, i) { return { it: it, i: i }; })
+      .sort(function (a, b) { return (b.it.year - a.it.year) || (a.i - b.i); })
+      .map(function (x) { return x.it; });
+  }
 
-/* Render up to `limit` publications into `target` (an element or its id).
-   Omit `limit` to render all of them. */
-window.renderPublications = function (target, limit) {
-  var el = (typeof target === 'string') ? document.getElementById(target) : target;
-  if (!el) return;
-  var pubs = window.PUBLICATIONS.slice();
-  if (limit) pubs = pubs.slice(0, limit);
-  if (!pubs.length) { el.innerHTML = '<p>Publications coming soon.</p>'; return; }
-  var ol = document.createElement('ol');
-  ol.className = 'pub-list';
-  pubs.forEach(function (p) {
-    var li = document.createElement('li');
-    var title = (p.url && p.url !== '#')
-      ? '<a href="' + p.url + '">' + p.title + '</a>'
-      : p.title;
-    li.innerHTML = p.authors + '. ' + title + '. <i>' + p.journal + '</i> (' + p.year + ').';
-    ol.appendChild(li);
-  });
-  el.innerHTML = '';
-  el.appendChild(ol);
-};
+  function entryHTML(p) {
+    var s = esc(p.authors) + '. ' + esc(p.title) + '. <em>' + esc(p.venue) + '</em> ' + p.year;
+    if (p.detail) s += ';' + esc(p.detail);
+    s += '.';
+    if (p.doi) {
+      var url = 'https://doi.org/' + p.doi;
+      s += ' <a href="' + esc(url) + '">' + esc(url) + '</a>';
+    }
+    if (p.pmid) {
+      s += ' <a href="https://pubmed.ncbi.nlm.nih.gov/' + esc(p.pmid) + '/">PubMed ' + esc(p.pmid) + '</a>';
+    }
+    return s;
+  }
+
+  function listOf(items) {
+    var ol = document.createElement('ol');
+    ol.className = 'pub-list';
+    byYearDesc(items).forEach(function (p) {
+      var li = document.createElement('li');
+      li.innerHTML = entryHTML(p);
+      ol.appendChild(li);
+    });
+    return ol;
+  }
+
+  // Full Publications page: each section in the file's order, reverse-chron within.
+  window.renderAllPublications = function (target) {
+    var el = (typeof target === 'string') ? document.getElementById(target) : target;
+    if (!el || !DATA) return;
+    el.innerHTML = '';
+    DATA.sections.forEach(function (sec) {
+      var items = DATA.items.filter(function (p) { return p.section === sec.id; });
+      if (!items.length) return;
+      var h2 = document.createElement('h2');
+      h2.textContent = sec.label;
+      el.appendChild(h2);
+      el.appendChild(listOf(items));
+    });
+  };
+
+  // Home page: the N most recent entries overall.
+  window.renderRecentPublications = function (target, limit) {
+    var el = (typeof target === 'string') ? document.getElementById(target) : target;
+    if (!el || !DATA) return;
+    var recent = byYearDesc(DATA.items).slice(0, limit || 3);
+    el.innerHTML = '';
+    el.appendChild(listOf(recent));
+  };
+})();

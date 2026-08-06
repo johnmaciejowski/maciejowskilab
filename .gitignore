@@ -1,3 +1,9 @@
 .DS_Store
 content/
 *-draft-*.md
+
+# Copy/data sources live in the working folder but must never be published.
+# The site is built from them: markdown -> HTML, publications.json -> js/publications-data.js
+/*.md
+!/README.md
+/publications.json

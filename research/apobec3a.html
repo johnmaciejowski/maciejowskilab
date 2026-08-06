@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>APOBEC3A — Maciejowski Lab</title>
+  <title>APOBEC3A mutagenesis and cell state — Maciejowski Lab</title>
   <link rel="stylesheet" href="../css/style.css">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
@@ -22,12 +22,58 @@
         <li><a href="../people.html">People</a></li>
         <li><a href="index.html">Research</a></li>
         <li><a href="../publications.html">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
         <li><a href="../join.html">Join</a></li>
       </ul>
     </nav>
   </header>
+
   <main class="container">
-    <h1>APOBEC3A</h1>
+    <h1>APOBEC3A mutagenesis and cell state</h1>
+
+    <p>The APOBEC3 cytidine deaminases generate SBS2 and SBS13, two of the most prevalent mutational signatures in human cancer, found across a majority of tumor types. Which family member is responsible for ongoing mutagenesis, why its activity occurs in bursts rather than continuously, and what governs those bursts were long poorly understood.</p>
+
+    <p>Our interest in this began from an unexpected direction. Telomere crisis, which the lab studies as a source of chromosome bridges and complex rearrangement, also produces APOBEC3-driven clustered mutations. The same origin that anchors our work on genomic instability and innate immunity turns out to feed this one.</p>
+
+    <section>
+      <h2>APOBEC3A is the dominant endogenous mutator</h2>
+      <p>Identifying the responsible paralog was difficult because the candidates differ in both expression and activity. Using genetic deletion across breast, bladder, lung, and lymphoma cancer cell models, we established that APOBEC3A is the dominant source of ongoing APOBEC mutagenesis. APOBEC3A deletion eliminated SBS2 and SBS13. APOBEC3B deletion did not reduce mutation burden in most contexts.</p>
+      <p>This was counterintuitive. APOBEC3A is expressed far below APOBEC3B in bulk measurements, and a scarcely detectable enzyme was therefore dominating the mutational landscape of epithelial cancers.</p>
+    </section>
+
+    <section>
+      <h2>The activity is episodic and comes from rare cells</h2>
+      <p>Longitudinal whole-genome sequencing showed that APOBEC mutations do not accumulate steadily. They arrive in discrete bursts, concentrated within a minority of phylogenetic branches rather than distributed evenly across a lineage.</p>
+      <p>We reasoned that this pattern reflects transient activation in a small number of cells. Single-cell RNA sequencing supported it, with APOBEC3A expression confined to a small fraction of cells while APOBEC3B was detected broadly. To capture those cells we inserted a HaloTag at the endogenous APOBEC3A locus, generating a reporter that marks cells in which the enzyme is induced. The reporter-high state proved transient. Cells sorted for high signal returned toward the baseline fraction within 192 hours, with no growth difference indicating selection of a stable subpopulation.</p>
+    </section>
+
+    <section>
+      <h2>A transient squamous state licenses APOBEC3A</h2>
+      <p>Differential expression between sorted reporter-high and reporter-low cells showed that APOBEC3A-high cells occupy a squamous differentiation state, marked by the stress keratins KRT6A and KRT16 and other keratinocyte differentiation genes. This was notable because the state appears in non-squamous cancers as a plastic, stress-associated program rather than a fixed lineage identity. The squamous signature was the strongest correlate of APOBEC3A activity across cancer cell lines and patient tumors.</p>
+      <p>The squamous differentiation transcription factor ZNF750 gates entry. Depleting ZNF750 reduced APOBEC3A protein in breast and lung cancer cells. APOBEC3A is not a passive marker of the state, either. Its catalytic activity reinforces part of the squamous program through genomic uracil and downstream JNK-AP-1 signaling, forming a feedback loop that stabilizes the state in which it acts.</p>
+      <p>The circuit is engaged by therapy. In EGFR-mutant lung adenocarcinoma cells, EGFR inhibition with osimertinib induced ZNF750 and APOBEC3A within a small population of drug-tolerant cells, and ZNF750 depletion attenuated the induction. Targeted therapy may therefore accelerate APOBEC3A mutagenesis in the cells that survive treatment, providing a route to genomic diversification and acquired resistance.</p>
+      <!-- TODO: figure -->
+      <div class="figure-placeholder"></div>
+    </section>
+
+    <section>
+      <h2>Open questions</h2>
+      <p><strong>What gates entry into the APOBEC3A-permissive state.</strong> ZNF750 is required, but the wider lineage and chromatin circuitry that determines which cells enter the state, and when, is undefined.</p>
+      <p><strong>What a single excursion actually costs the genome.</strong> We can now identify cells passing through the APOBEC3A-high state. The mutational yield of one passage, and the character of the mutations it leaves, have not been measured directly.</p>
+      <p><strong>Whether therapy-induced mutagenesis can be intercepted.</strong> If targeted therapy drives cells into the state that licenses APOBEC3A, then the transcriptional requirements for entering that state are a candidate point of intervention upstream of the mutator itself.</p>
+      <p><strong>Why APOBEC3A and not APOBEC3B.</strong> The hierarchy between the two paralogs is context dependent. Where each one contributes, and what determines the difference, is unknown.</p>
+    </section>
+
+    <section>
+      <h2>Selected publications</h2>
+      <p>Striepen J, Dananberg A, Ruzgaitė A, Hurley A, Toufektchan E, Nichols A, Rosenberg H, Cordero C, Mertz TM, Norman RX, Koche R, Roberts SA, Maciejowski J. Squamous-state excursions activate APOBEC3A in cancer. <em>bioRxiv</em> 2026.</p>
+      <p>Striepen J, Culibrk L, Dananberg A, Rozowsky JS, Petljak M, Maciejowski J. A context dependent hierarchy of APOBEC3A and APOBEC3B mutators in lung adenocarcinoma. <em>bioRxiv</em> 2026.</p>
+      <p>Petljak M, Dananberg A, Chu K, Bergstrom EN, Striepen J, von Morgen P, Chen Y, Shah H, Sale JE, Alexandrov LB, Stratton MR, Maciejowski J. Mechanisms of APOBEC3 mutagenesis in human cancer cells. <em>Nature</em> 2022;607:799–807.</p>
+      <p>Maciejowski J, Chatzipli A, Dananberg A, Chu K, Toufektchan E, Klimczak LJ, Gordenin DA, Campbell PJ, de Lange T. APOBEC3-dependent kataegis and TREX1-driven chromothripsis during telomere crisis. <em>Nature Genetics</em> 2020;52:884–890.</p>
+      <p>Petljak M, Green AM, Maciejowski J, Weitzman MD. Addressing the benefits of inhibiting APOBEC3-dependent mutagenesis in cancer. <em>Nature Genetics</em> 2022;54:1599–1608.</p>
+    </section>
+
+    <p>Rotation projects in this area are listed on the <a href="../join.html">Join</a> page.</p>
   </main>
 
   <footer id="site-footer"></footer>

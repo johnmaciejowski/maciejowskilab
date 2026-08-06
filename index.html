@@ -22,6 +22,7 @@
         <li><a href="people.html">People</a></li>
         <li><a href="research/index.html">Research</a></li>
         <li><a href="publications.html">Publications</a></li>
+        <li><a href="resources.html">Resources</a></li>
         <li><a href="join.html">Join</a></li>
       </ul>
     </nav>
@@ -31,14 +32,14 @@
     <h1>Maciejowski Lab</h1>
     <p><em>Sloan Kettering Institute, Memorial Sloan Kettering Cancer Center</em></p>
 
-    <!-- TODO: Hero image (microscopy) — supplied separately; place in assets/img/
-         and set descriptive alt text. Choose something that survives a very wide crop. -->
+    <!-- TODO: hero image -->
     <div id="hero" class="hero-placeholder"></div>
 
     <p>Genomic instability puts DNA where it does not belong. Chromosomes are mis-segregated, telomeres fail, and broken chromosomes fuse and break again, and each of these leaves DNA in the wrong place or the wrong state inside the cell. From that common origin the lab follows two questions. The first is what happens when a cell finds its own DNA loose in the cytoplasm, where it reads as a sign of infection, and how tumors learn to suppress the response that follows. The second is what instability writes into the genome and leaves behind, from characteristic patterns of mutation to oncogenes amplified onto circles of DNA that float free of the chromosomes. Across both we want to understand how cancer cells exploit the consequences of their own instability, and to turn that understanding into something treatable.</p>
 
     <section>
       <h2>Research</h2>
+      <!-- TODO: render the three cards below as linked cards -->
       <article>
         <h3><a href="research/ecdna.html">Extrachromosomal DNA</a></h3>
         <p>Oncogenes amplified on circular DNA that has no centromere, and how those circles survive cell division anyway.</p>
@@ -55,6 +56,7 @@
 
     <section>
       <h2>Recent work</h2>
+      <!-- TODO: render the three most recent entries from publications.json -->
       <div id="recent-publications"></div>
       <p><a href="publications.html">All publications →</a></p>
     </section>
@@ -67,8 +69,9 @@
 
   <footer id="site-footer"></footer>
 
+  <script src="js/publications-data.js"></script>
   <script src="js/publications.js"></script>
   <script src="js/footer.js"></script>
-  <script>window.renderPublications && renderPublications('recent-publications', 3);</script>
+  <script>window.renderRecentPublications && renderRecentPublications('recent-publications', 3);</script>
 </body>
 </html>

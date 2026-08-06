@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Immunity — Maciejowski Lab</title>
+  <title>Genomic instability and innate immunity — Maciejowski Lab</title>
   <link rel="stylesheet" href="../css/style.css">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
@@ -22,12 +22,63 @@
         <li><a href="../people.html">People</a></li>
         <li><a href="index.html">Research</a></li>
         <li><a href="../publications.html">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
         <li><a href="../join.html">Join</a></li>
       </ul>
     </nav>
   </header>
+
   <main class="container">
-    <h1>Immunity</h1>
+    <h1>Genomic instability and innate immunity</h1>
+
+    <p>Chromosome mis-segregation, telomere crisis, and breakage-fusion-bridge cycles all deposit genomic DNA in the cytoplasm, where it is read as a danger signal. The nuclear aberrations that carry it there are principally micronuclei and chromosome bridges, both of which assemble unstable envelopes that rupture during interphase and lose compartmentalization. The exposed DNA is then a substrate for the cytosolic sensor cGAS, which triggers STING-dependent type I interferon signaling, and for the exonuclease TREX1, which degrades it.</p>
+
+    <p>This creates a problem for a chromosomally unstable tumor. The same instability that supplies the genetic variation on which selection acts also risks provoking an interferon response that makes the tumor visible to the immune system. We study how cancer cells contain that response, and what happens when they cannot.</p>
+
+    <p>The program grew out of work on telomere crisis, where dicentric chromosomes formed by telomere fusion persist through mitosis as chromosome bridges that ultimately rupture and generate clustered mutations.</p>
+
+    <section>
+      <h2>TREX1 acts at micronuclei from the ER</h2>
+      <p>We established that ER-anchored TREX1 degrades cytosol-exposed DNA at micronuclei and chromosome bridges, and that it limits cGAS activation at these sites. An unexpected feature of this regulation is that TREX1 requires its association with the ER in order to reach and resect micronuclear DNA, even though that DNA lies free in the cytoplasm once the micronuclear envelope has ruptured.</p>
+      <p>TREX1 must also contend with the physical environment cGAS itself creates, since cGAS-DNA phase separation restricts access to cytosolic DNA.</p>
+    </section>
+
+    <section>
+      <h2>A protein barrier explains the ER-tethering requirement</h2>
+      <p>The requirement for ER tethering was paradoxical, since ruptured micronuclei are open to the cytoplasm. We resolved it by identifying barrier-to-autointegration factor, BAF, as a regulator of TREX1 activity at micronuclei.</p>
+      <p>BAF accumulates rapidly on ruptured micronuclei through direct binding to cytosol-exposed DNA and concentrates additional factors there, including membrane-associated LEM-domain proteins. Rather than promoting degradation, BAF shields micronuclear DNA. Recombinant BAF inhibited TREX1 nuclease activity in vitro in a manner requiring BAF DNA binding, since a DNA-binding-deficient mutant failed to inhibit.</p>
+      <p>A soluble TREX1 lacking its transmembrane domain failed to accumulate at ruptured micronuclei and was defective for resection. Depleting BAF restored resection by the soluble enzyme without restoring its localization, indicating that ER tethering allows TREX1 to bypass the barrier rather than to localize through it. BAF likewise competes with cGAS for micronuclear DNA, and BAF depletion increased cGAS accumulation and raised cGAMP levels.</p>
+      <p>The barrier therefore limits the diffusive entry of DNA-binding proteins at ruptured micronuclei, accounts for the dependence of TREX1 on ER tethering, and identifies BAF as a gatekeeper that simultaneously admits TREX1 and restrains cGAS engagement with immunostimulatory DNA.</p>
+      <!-- TODO: figure -->
+      <div class="figure-placeholder"></div>
+    </section>
+
+    <section>
+      <h2>Tumors induce TREX1 to evade immune detection</h2>
+      <p>Chromosomally unstable tumors resolve the tension between instability and immune visibility by inducing TREX1. cGAS-STING signaling drives TREX1 upregulation, the induced enzyme digests cytosolic DNA, and the response is dampened. The result is an adaptive negative feedback loop that enables immune evasion.</p>
+      <p>To test whether this makes TREX1 a therapeutic liability, we generated Trex1 knockout derivatives of the genomically unstable, triple-negative breast cancer line EO771.LMB. TREX1 loss markedly increased IFN-β secretion in a cGAS-dependent manner. In syngeneic hosts, Trex1 knockout slowed tumor growth, potentiated the response to anti-PD-1 checkpoint blockade, prolonged host survival, and increased intratumoral CD8 T-cell infiltration, again requiring cGAS. These effects were selective for tumors that retained the ability to mount a type I interferon response downstream of STING.</p>
+      <p>TREX1 induction is therefore an innate immune checkpoint that shields chromosomally unstable tumors from surveillance, and its removal is a strategy for restoring antitumor immunity in tumors poised to respond. Concordant reports from several groups appeared alongside ours, and subsequent studies have shown that acute TREX1 inactivation is well tolerated and effective in combination with checkpoint blockade. Together this work has made a strong case that TREX1 is a tractable target in genomically unstable cancers, and developing that into a therapeutic strategy is a central effort of the lab.</p>
+    </section>
+
+    <section>
+      <h2>Open questions</h2>
+      <p><strong>The molecular mechanism by which TREX1 inhibits cGAS.</strong> How the enzyme restrains the pathway is incompletely defined, and defining it is central to knowing how completely the pathway can be reactivated.</p>
+      <p><strong>How TREX1 is recruited to and activated at ruptured micronuclei.</strong> ER tethering permits bypass of the BAF barrier, but how the enzyme is delivered and licensed at these sites is poorly understood.</p>
+      <p><strong>Whether autophagy-related factors participate.</strong> Autophagy machinery may contribute to TREX1-dependent suppression of cGAS-STING. We are testing whether it does.</p>
+      <p><strong>Which tumors are poised to respond.</strong> TREX1 removal restores immune control selectively in tumors that retain a functional interferon response downstream of STING. Defining what determines that state is necessary for identifying which patients such a strategy would serve.</p>
+    </section>
+
+    <section>
+      <h2>Selected publications</h2>
+      <p>Chen Y, Norman RX, Toufektchan E, Luan X, Shim A, Rosenberg H, Kovacs MT, Nichols A, Hickling J, Cifani P, Kentsis A, Zhou W, Maciejowski J. ER-tethering directs TREX1 penetration of a BAF-dependent barrier at micronuclei. <em>Molecular Cell</em> 2026;86(6):1099–1115.</p>
+      <p>Toufektchan E, Dananberg A, Striepen J, Hickling JH, Shim A, Chen Y, Nichols A, Duran Paez MA, Mohr L, Bakhoum SF, Maciejowski J. Intratumoral TREX1 induction promotes immune evasion by limiting type I IFN. <em>Cancer Immunology Research</em> 2024;12(6):673–686.</p>
+      <p>Shim A, Luan X, Zhou W, Crow YJ, Maciejowski J. Mutations in the non-catalytic polyproline motif destabilize TREX1 and amplify cGAS-STING signaling. <em>Human Molecular Genetics</em> 2024;33(18):1555–1566.</p>
+      <p>Mohr L, Toufektchan E, von Morgen P, Chu K, Kapoor A, Maciejowski J. ER-directed TREX1 limits cGAS activation at micronuclei. <em>Molecular Cell</em> 2021;81(4):724–738.</p>
+      <p>Zhou W, Mohr L, Maciejowski J, Kranzusch PJ. cGAS phase separation inhibits TREX1-mediated DNA degradation and enhances cytosolic DNA sensing. <em>Molecular Cell</em> 2021;81(4):739–755.</p>
+      <p>Shim A, Chen Y, Maciejowski J. Activation and regulation of cGAS-STING signaling in cancer cells. <em>Molecular Cell</em> 2025;85(20):3807–3822.</p>
+    </section>
+
+    <p>Rotation projects in this area are listed on the <a href="../join.html">Join</a> page.</p>
   </main>
 
   <footer id="site-footer"></footer>
