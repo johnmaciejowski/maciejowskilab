@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Four Groups | Maciejowski Lab</title>
+
+<!--
+  ============================================================
+  TO CHANGE THE PUZZLE: edit the GROUPS array in the script at
+  the bottom of this file. Nothing else needs to be touched.
+
+  Four groups. Four members each. Order the groups from easiest
+  to hardest, since that is the order the colours imply.
+
+  Styling is deliberately minimal and driven by the CSS custom
+  properties in :root, so the Claude Design pass can re-theme
+  this file without touching the markup or the logic.
+  ============================================================
+-->
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #16191d;
+    --ink-soft: #5d646d;
+    --tile: #eceef1;
+    --tile-hover: #e2e5e9;
+    --tile-selected: #4a5159;
+    --tile-selected-ink: #ffffff;
+    --line: #d5d9de;
+
+    --g1: #f2d98c;
+    --g2: #a9c48b;
+    --g3: #8fb3d9;
+    --g4: #b79ec9;
+
+    --radius: 6px;
+    --gap: 8px;
+    --font-body: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 32px 16px 64px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+  }
+
+  .wrap { max-width: 560px; margin: 0 auto; }
+
+  h1 {
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+
+  .sub {
+    margin: 0 0 24px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  .solved { display: grid; gap: var(--gap); margin-bottom: var(--gap); }
+
+  .solved-row {
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    text-align: center;
+    color: var(--ink);
+  }
+  .solved-row[data-tier="0"] { background: var(--g1); }
+  .solved-row[data-tier="1"] { background: var(--g2); }
+  .solved-row[data-tier="2"] { background: var(--g3); }
+  .solved-row[data-tier="3"] { background: var(--g4); }
+
+  .solved-name {
+    font-weight: 650;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+  .solved-members { font-size: 0.85rem; margin-top: 2px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap);
+  }
+
+  .tile {
+    aspect-ratio: 1 / 1;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--tile);
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    font-size: clamp(0.6rem, 2.6vw, 0.85rem);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    hyphens: auto;
+    overflow-wrap: anywhere;
+    transition: background-color 90ms ease, transform 90ms ease;
+  }
+
+  .tile:hover { background: var(--tile-hover); }
+  .tile:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+  .tile[aria-pressed="true"] {
+    background: var(--tile-selected);
+    color: var(--tile-selected-ink);
+  }
+
+  .tile.pop { transform: scale(0.94); }
+  .tile.wrong { animation: shake 380ms ease; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+  }
+
+  .status {
+    min-height: 1.6em;
+    margin: 18px 0 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .lives {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--tile-selected);
+  }
+  .dot.spent { background: var(--line); }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  button.ctl {
+    font: inherit;
+    font-size: 0.9rem;
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  button.ctl:hover:not(:disabled) { border-color: var(--ink-soft); }
+  button.ctl:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  button.ctl[disabled] { opacity: 0.35; cursor: default; }
+  button.ctl.primary {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .endnote {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .endnote a { color: inherit; }
+  .endnote[hidden] { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile, .tile.pop, .tile.wrong { transition: none; animation: none; transform: none; }
+  }
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SVKRLTYJR9');
+</script>
+</head>
+<body>
+
+<div class="wrap">
+  <p><a href="index.html">← Lab games</a></p>
+  <h1>Four groups</h1>
+  <p class="sub">Sixteen things from this lab. Find the four groups of four. Four wrong guesses and it is over.</p>
+
+  <div class="solved" id="solved"></div>
+  <div class="grid" id="grid"></div>
+
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <div class="lives" id="lives"></div>
+
+  <div class="controls">
+    <button class="ctl" id="shuffle" type="button">Shuffle</button>
+    <button class="ctl" id="clear" type="button" disabled>Clear</button>
+    <button class="ctl primary" id="submit" type="button" disabled>Submit</button>
+  </div>
+
+  <p class="endnote" id="endnote" hidden></p>
+</div>
+
+<script>
+// ============================================================
+// THE PUZZLE. Edit this and nothing else.
+// Order groups easiest first.
+// ============================================================
+const GROUPS = [
+  {
+    name: "Spirit vegetables in this lab",
+    members: ["Leek", "Bok choy", "Napa cabbage", "Jalapeño"]
+  },
+  {
+    name: "Bench shorthand",
+    members: ["FISH", "Blot", "Gel", "Paint"]
+  },
+  {
+    name: "What chromosomes do in crisis",
+    members: ["Shatter", "Fuse", "Bridge", "Cluster"]
+  },
+  {
+    name: "Arrive at a ruptured micronucleus",
+    members: ["cGAS", "TREX1", "BAF", "RPA"]
+  }
+];
+
+// Set to false to hide the "One away." nudge. Off makes the puzzle
+// meaningfully harder, since a near miss gives you nothing.
+const SHOW_ONE_AWAY = false;
+
+const WIN_NOTE = 'Nicely done. If you want to know what any of those actually are, the <a href="../research/index.html">research pages</a> explain them, and the <a href="../join.html">rotation projects</a> are where you would work on them.';
+const LOSE_NOTE = 'That is a hard one if you have not met us. The <a href="../people.html">people page</a> gives away most of the answers.';
+
+// ============================================================
+// Game
+// ============================================================
+const MAX_MISTAKES = 4;
+
+const gridEl = document.getElementById("grid");
+const solvedEl = document.getElementById("solved");
+const statusEl = document.getElementById("status");
+const livesEl = document.getElementById("lives");
+const endnoteEl = document.getElementById("endnote");
+const submitBtn = document.getElementById("submit");
+const clearBtn = document.getElementById("clear");
+const shuffleBtn = document.getElementById("shuffle");
+
+let tiles = [];
+let selected = [];
+let mistakes = 0;
+let solvedCount = 0;
+let locked = false;
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildTiles() {
+  const all = [];
+  GROUPS.forEach((g, tier) => {
+    g.members.forEach(label => all.push({ label, tier }));
+  });
+  tiles = shuffle(all);
+}
+
+function renderGrid() {
+  gridEl.innerHTML = "";
+  tiles.forEach(t => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tile";
+    btn.textContent = t.label;
+    btn.setAttribute("aria-pressed", selected.includes(t.label) ? "true" : "false");
+    btn.addEventListener("click", () => toggle(t.label, btn));
+    gridEl.appendChild(btn);
+  });
+  const remaining = 4 - solvedCount;
+  gridEl.style.display = remaining > 0 ? "grid" : "none";
+}
+
+function renderLives() {
+  livesEl.innerHTML = "";
+  const label = document.createElement("span");
+  label.textContent = "Guesses left";
+  livesEl.appendChild(label);
+  for (let i = 0; i < MAX_MISTAKES; i++) {
+    const d = document.createElement("span");
+    d.className = "dot" + (i < mistakes ? " spent" : "");
+    livesEl.appendChild(d);
+  }
+}
+
+function toggle(label, btn) {
+  if (locked) return;
+  const i = selected.indexOf(label);
+  if (i > -1) {
+    selected.splice(i, 1);
+    btn.setAttribute("aria-pressed", "false");
+  } else if (selected.length < 4) {
+    selected.push(label);
+    btn.setAttribute("aria-pressed", "true");
+    btn.classList.add("pop");
+    setTimeout(() => btn.classList.remove("pop"), 100);
+  }
+  statusEl.textContent = "";
+  updateControls();
+}
+
+function updateControls() {
+  submitBtn.disabled = locked || selected.length !== 4;
+  clearBtn.disabled = locked || selected.length === 0;
+  shuffleBtn.disabled = locked;
+}
+
+function selectedButtons() {
+  return Array.from(gridEl.children).filter(b => b.getAttribute("aria-pressed") === "true");
+}
+
+function submit() {
+  if (selected.length !== 4) return;
+
+  const tiers = selected.map(l => tiles.find(t => t.label === l).tier);
+  const first = tiers[0];
+
+  if (tiers.every(t => t === first)) {
+    solveGroup(first);
+    return;
+  }
+
+  // One away?
+  const counts = {};
+  tiers.forEach(t => counts[t] = (counts[t] || 0) + 1);
+  const best = Math.max(...Object.values(counts));
+
+  mistakes++;
+  renderLives();
+
+  const btns = selectedButtons();
+  btns.forEach(b => b.classList.add("wrong"));
+  locked = true;
+  updateControls();
+
+  setTimeout(() => {
+    btns.forEach(b => b.classList.remove("wrong"));
+    locked = false;
+    statusEl.textContent = (SHOW_ONE_AWAY && best === 3) ? "One away." : "Not a group.";
+    if (mistakes >= MAX_MISTAKES) revealAll();
+    else updateControls();
+  }, 420);
+}
+
+function solveGroup(tier) {
+  const g = GROUPS[tier];
+  selected = [];
+  tiles = tiles.filter(t => t.tier !== tier);
+  solvedCount++;
+
+  const row = document.createElement("div");
+  row.className = "solved-row";
+  row.dataset.tier = tier;
+  row.innerHTML =
+    '<div class="solved-name">' + g.name + "</div>" +
+    '<div class="solved-members">' + g.members.join(" · ") + "</div>";
+  solvedEl.appendChild(row);
+
+  renderGrid();
+  updateControls();
+
+  if (solvedCount === 4) finish(true);
+  else statusEl.textContent = "";
+}
+
+function revealAll() {
+  locked = true;
+  const remaining = GROUPS
+    .map((g, tier) => tier)
+    .filter(tier => !Array.from(solvedEl.children).some(r => Number(r.dataset.tier) === tier));
+
+  remaining.forEach(tier => {
+    const g = GROUPS[tier];
+    const row = document.createElement("div");
+    row.className = "solved-row";
+    row.dataset.tier = tier;
+    row.innerHTML =
+      '<div class="solved-name">' + g.name + "</div>" +
+      '<div class="solved-members">' + g.members.join(" · ") + "</div>";
+    solvedEl.appendChild(row);
+  });
+
+  tiles = [];
+  renderGrid();
+  finish(false);
+}
+
+function finish(won) {
+  locked = true;
+  statusEl.textContent = won ? "All four." : "Out of guesses.";
+  endnoteEl.innerHTML = won ? WIN_NOTE : LOSE_NOTE;
+  endnoteEl.hidden = false;
+  submitBtn.disabled = true;
+  clearBtn.disabled = true;
+  shuffleBtn.disabled = true;
+}
+
+shuffleBtn.addEventListener("click", () => {
+  if (locked) return;
+  tiles = shuffle(tiles);
+  renderGrid();
+});
+
+clearBtn.addEventListener("click", () => {
+  if (locked) return;
+  selected = [];
+  renderGrid();
+  updateControls();
+});
+
+submitBtn.addEventListener("click", submit);
+
+buildTiles();
+renderGrid();
+renderLives();
+updateControls();
+</script>
+
+</body>
+</html>

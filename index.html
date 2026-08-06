@@ -26,8 +26,49 @@
       </ul>
     </nav>
   </header>
+
   <main class="container">
-    <h1>Home</h1>
+    <h1>Maciejowski Lab</h1>
+    <p><em>Sloan Kettering Institute, Memorial Sloan Kettering Cancer Center</em></p>
+
+    <!-- TODO: Hero image (microscopy) — supplied separately; place in assets/img/
+         and set descriptive alt text. Choose something that survives a very wide crop. -->
+    <div id="hero" class="hero-placeholder"></div>
+
+    <p>Genomic instability puts DNA where it does not belong. Chromosomes are mis-segregated, telomeres fail, and broken chromosomes fuse and break again, and each of these leaves DNA in the wrong place or the wrong state inside the cell. From that common origin the lab follows two questions. The first is what happens when a cell finds its own DNA loose in the cytoplasm, where it reads as a sign of infection, and how tumors learn to suppress the response that follows. The second is what instability writes into the genome and leaves behind, from characteristic patterns of mutation to oncogenes amplified onto circles of DNA that float free of the chromosomes. Across both we want to understand how cancer cells exploit the consequences of their own instability, and to turn that understanding into something treatable.</p>
+
+    <section>
+      <h2>Research</h2>
+      <article>
+        <h3><a href="research/ecdna.html">Extrachromosomal DNA</a></h3>
+        <p>Oncogenes amplified on circular DNA that has no centromere, and how those circles survive cell division anyway.</p>
+      </article>
+      <article>
+        <h3><a href="research/apobec3a.html">APOBEC3A mutagenesis</a></h3>
+        <p>An enzyme responsible for a large share of the point mutations in human cancer, and the rare cell state that switches it on.</p>
+      </article>
+      <article>
+        <h3><a href="research/immunity.html">Genomic instability and innate immunity</a></h3>
+        <p>How cells detect their own DNA when it escapes into the cytoplasm, and how tumors keep that from happening.</p>
+      </article>
+    </section>
+
+    <section>
+      <h2>Recent work</h2>
+      <div id="recent-publications"></div>
+      <p><a href="publications.html">All publications →</a></p>
+    </section>
+
+    <section>
+      <h2>Join the lab</h2>
+      <p>We take rotation students, postdocs, and research technicians. Current rotation projects and what to send are on the <a href="join.html">Join</a> page.</p>
+    </section>
   </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="js/publications.js"></script>
+  <script src="js/footer.js"></script>
+  <script>window.renderPublications && renderPublications('recent-publications', 3);</script>
 </body>
 </html>
