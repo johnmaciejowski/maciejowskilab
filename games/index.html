@@ -15,7 +15,6 @@
     .games a:hover,.games a:focus-visible{border-color:var(--accent);outline:none}
     .games h2{margin:.1rem 0 .3rem;font-size:1.15rem}
     .games p{margin:0;color:var(--muted);font-size:.95rem}
-    .games .soon{opacity:.6}
     .tag{display:inline-block;font-size:.75rem;color:var(--muted);
          border:1px solid var(--border);border-radius:999px;padding:.05rem .5rem;margin-top:.5rem}
   </style>
@@ -36,7 +35,6 @@
         <li><a href="../people.html">People</a></li>
         <li><a href="../research/index.html">Research</a></li>
         <li><a href="../publications.html">Publications</a></li>
-        <li><a href="index.html">Games</a></li>
         <li><a href="../join.html">Join</a></li>
       </ul>
     </nav>
@@ -46,8 +44,9 @@
     <p>Little playable things about what we study. Each one gives you a result —
     tell us what you got.</p>
 
-    <!-- EDIT ME: add or reorder games here. Set "href" to the game's file.
-         Use "todo:true" for a game whose page doesn't exist yet. -->
+    <!-- EDIT ME: add or reorder games here. "href" is the game's file (or a full
+         URL for something hosted elsewhere). Set "external:true" for an off-site
+         link so it opens in a new tab. -->
     <ul class="games" id="games"></ul>
   </main>
 
@@ -55,25 +54,29 @@
     const GAMES = [
       { href: "lucky-copies.html",
         title: "Lucky Copies",
-        blurb: "Divide a cell over and over and watch ecDNA pile up — or vanish — by pure chance.",
+        blurb: "Follow one lineage as ecDNA rings are handed to the daughter nuclei — faithfully, but never evenly.",
         tag: "≈1 min" },
       { href: "molecular-bee.html",
         title: "Molecular Spelling Bee",
         blurb: "Spell words from seven letters. Ordinary words count; the biology words teach you something.",
         tag: "≈2 min" },
-      { href: "../quiz.html",
+      { href: "bio-wordle.html",
+        title: "Bio Wordle",
+        blurb: "Guess the five-letter biology word in six tries. The answer's meaning is revealed at the end.",
+        tag: "≈2 min" },
+      { href: "https://sophie006liu.github.io/vegetal/",
         title: "Which vegetable are you?",
         blurb: "The lab's original personality quiz. Pick your spirit vegetable.",
-        tag: "the classic", todo: true }
+        tag: "the classic", external: true }
     ];
     const ul = document.getElementById('games');
     GAMES.forEach(g => {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = g.href;
-      if(g.todo){ li.classList.add('soon'); }
-      a.innerHTML = '<h2>'+g.title+'</h2><p>'+g.blurb+'</p>'+
-        (g.tag ? '<span class="tag">'+g.tag+(g.todo?' · link coming':'')+'</span>' : '');
+      if(g.external){ a.target = "_blank"; a.rel = "noopener noreferrer"; }
+      a.innerHTML = '<h2>'+g.title+(g.external?' ↗':'')+'</h2><p>'+g.blurb+'</p>'+
+        (g.tag ? '<span class="tag">'+g.tag+'</span>' : '');
       li.appendChild(a);
       ul.appendChild(li);
     });

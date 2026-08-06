@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bio Wordle — Maciejowski Lab</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#191919; --muted:#5f5f5f;
+    --card:#f5f5f4; --border:#d6d6d2;
+    --accent:#3b6ea5; --accent-ink:#ffffff;
+    --g:#4f9d69; --y:#c9a227; --x:#8a8a86; --tile-ink:#ffffff;
+    --radius:10px; --maxw:480px;
+    --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);
+       line-height:1.5;padding:1.25rem}
+  .wrap{max-width:var(--maxw);margin:0 auto}
+  a{color:var(--accent)}
+  .back{display:inline-block;font-size:.9rem;margin-bottom:1rem}
+  h1{font-size:1.6rem;margin:.2rem 0}
+  .lede{color:var(--muted);margin:.25rem 0 1rem}
+  .status{min-height:1.5em;text-align:center;font-weight:600;margin:.3rem 0}
+  .board{display:grid;grid-template-rows:repeat(6,1fr);gap:6px;justify-content:center;margin:.5rem 0}
+  .row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .tile{width:clamp(2.6rem,16vw,3.4rem);height:clamp(2.6rem,16vw,3.4rem);
+        border:2px solid var(--border);border-radius:8px;display:flex;align-items:center;
+        justify-content:center;font-size:1.5rem;font-weight:700;text-transform:uppercase}
+  .tile.filled{border-color:var(--muted)}
+  .tile.g{background:var(--g);border-color:var(--g);color:var(--tile-ink)}
+  .tile.y{background:var(--y);border-color:var(--y);color:var(--tile-ink)}
+  .tile.x{background:var(--x);border-color:var(--x);color:var(--tile-ink)}
+  .kb{margin-top:1rem;display:flex;flex-direction:column;gap:6px;align-items:center}
+  .kbrow{display:flex;gap:5px;justify-content:center}
+  .key{font:inherit;font-weight:600;border:none;border-radius:6px;background:var(--card);
+       color:var(--fg);padding:.75rem .55rem;min-width:1.9rem;cursor:pointer;text-transform:uppercase}
+  .key.wide{min-width:3.4rem;font-size:.8rem}
+  .key.g{background:var(--g);color:var(--tile-ink)}
+  .key.y{background:var(--y);color:var(--tile-ink)}
+  .key.x{background:var(--x);color:var(--tile-ink)}
+  .key:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+  .end{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+       padding:1.1rem;margin-top:1rem}
+  .end .cat{font-size:1.4rem;font-weight:700;margin:.1rem 0}
+  .end .term{font-weight:700}
+  .grid{font-size:1.1rem;line-height:1.15;margin:.4rem 0}
+  button.primary{font:inherit;background:var(--accent);color:var(--accent-ink);border:none;
+    border-radius:999px;padding:.6rem 1.2rem;cursor:pointer}
+  button.btn{font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--border);
+    border-radius:999px;padding:.6rem 1.1rem;cursor:pointer}
+  button.primary:focus-visible,button.btn:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+  .share{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+  .share input{flex:1 1 12rem;font:inherit;padding:.55rem .6rem;border:1px solid var(--border);
+    border-radius:8px;background:var(--bg);color:var(--fg);min-width:0}
+  .nudge{font-size:.9rem;color:var(--muted);margin-top:.8rem}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SVKRLTYJR9');
+</script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Lab games</a>
+
+  <!-- ===================================================================
+       EDIT ME to add words. Every answer must be exactly FIVE letters.
+       Give each a plain-English definition — it's revealed at the end, so
+       a player who's never heard the word still learns what it means.
+       (Guesses aren't spell-checked against a dictionary, so anyone can
+       play by deduction without knowing the target word in advance.)
+       ranks: named by how many guesses it took (index 0 = solved in 1).
+       =================================================================== -->
+  <script>
+  const GAME = {
+    words: [
+      { answer: "HELIX", def: "The twisted-ladder shape of double-stranded DNA." },
+      { answer: "CODON", def: "A three-letter word of the genetic code that specifies one amino acid." },
+      { answer: "CLONE", def: "A population of cells all descended from a single ancestor — how a tumor grows." },
+      { answer: "MOUSE", def: "The lab mouse: a workhorse model for studying cancer in a whole animal." },
+      { answer: "YEAST", def: "Baker's yeast — a single-celled model organism for basic cell biology." },
+      { answer: "VIRUS", def: "A tiny genetic parasite; its DNA in the wrong place is exactly what innate-immune sensors watch for." },
+      { answer: "LIPID", def: "Fatty molecules that build the membranes wrapping cells and nuclei." },
+      { answer: "PROBE", def: "A labeled piece of DNA used to find its matching sequence in a sample." },
+      { answer: "ASSAY", def: "A lab test that measures whether something is present or active." },
+      { answer: "AMINO", def: "As in amino acid — the building blocks proteins are made from." }
+    ],
+    ranks: ["Prodigy", "Sharp", "Solid", "Steady", "Clutch", "Phew"],  // 1..6 guesses
+    fail: "Not today"
+  };
+  </script>
+
+  <h1>Bio Wordle</h1>
+  <p class="lede">Guess the five-letter biology word in six tries.
+  <b>Green</b> = right spot, <b>gold</b> = right letter wrong spot, <b>grey</b> = not in the word.</p>
+
+  <div class="status" id="status" aria-live="polite">Type a 5-letter word and press Enter.</div>
+  <div class="board" id="board" aria-label="Guess board"></div>
+  <div class="kb" id="kb"></div>
+  <div id="end"></div>
+</div>
+
+<script>
+(function(){
+  const ROWS = 6, LEN = 5;
+  const pick = GAME.words[Math.floor(Math.random()*GAME.words.length)];
+  const ANSWER = pick.answer.toUpperCase();
+  const $ = id => document.getElementById(id);
+  const board = $('board'), kb = $('kb'), statusEl = $('status');
+
+  let row = 0, current = "", done = false;
+  const keyState = {};                 // letter -> 'g'|'y'|'x' (best)
+  const rowGrid = [];                  // emoji rows for sharing
+
+  // build board
+  for(let r=0;r<ROWS;r++){
+    const rEl=document.createElement('div'); rEl.className='row';
+    for(let c=0;c<LEN;c++){
+      const t=document.createElement('div'); t.className='tile';
+      t.id='t'+r+'-'+c; rEl.appendChild(t);
+    }
+    board.appendChild(rEl);
+  }
+
+  // build keyboard
+  const LAYOUT = ["QWERTYUIOP","ASDFGHJKL","↵ZXCVBNM⌫"];
+  LAYOUT.forEach(line=>{
+    const rowEl=document.createElement('div'); rowEl.className='kbrow';
+    for(const ch of line){
+      const b=document.createElement('button'); b.type='button'; b.className='key';
+      if(ch==='↵'){ b.classList.add('wide'); b.textContent='Enter'; b.dataset.k='ENTER'; b.setAttribute('aria-label','Enter'); }
+      else if(ch==='⌫'){ b.classList.add('wide'); b.textContent='Del'; b.dataset.k='DEL'; b.setAttribute('aria-label','Delete'); }
+      else { b.textContent=ch; b.dataset.k=ch; b.id='k'+ch; }
+      b.addEventListener('click',()=>handle(b.dataset.k));
+      rowEl.appendChild(b);
+    }
+    kb.appendChild(rowEl);
+  });
+
+  function drawCurrent(){
+    for(let c=0;c<LEN;c++){
+      const t=$('t'+row+'-'+c);
+      t.textContent = current[c] || '';
+      t.classList.toggle('filled', !!current[c]);
+    }
+  }
+  function say(msg){ statusEl.textContent = msg; }
+
+  function evaluate(guess){
+    const res=Array(LEN).fill('x');
+    const counts={};
+    for(const ch of ANSWER) counts[ch]=(counts[ch]||0)+1;
+    for(let i=0;i<LEN;i++){ if(guess[i]===ANSWER[i]){ res[i]='g'; counts[guess[i]]--; } }
+    for(let i=0;i<LEN;i++){
+      if(res[i]==='g') continue;
+      const ch=guess[i];
+      if(counts[ch]>0){ res[i]='y'; counts[ch]--; }
+    }
+    return res;
+  }
+
+  const RANK = {g:3,y:2,x:1};
+  function paint(guess,res){
+    const emoji={g:'🟩',y:'🟨',x:'⬜'};
+    let line='';
+    for(let i=0;i<LEN;i++){
+      const t=$('t'+row+'-'+i); t.classList.add(res[i]);
+      const k=$('k'+guess[i]);
+      if(k && (!keyState[guess[i]] || RANK[res[i]]>RANK[keyState[guess[i]]])){
+        k.classList.remove('g','y','x'); k.classList.add(res[i]); keyState[guess[i]]=res[i];
+      }
+      line+=emoji[res[i]];
+    }
+    rowGrid.push(line);
+  }
+
+  function submit(){
+    if(current.length<LEN){ return say('Needs '+LEN+' letters.'); }
+    const guess=current.toUpperCase();
+    const res=evaluate(guess);
+    paint(guess,res);
+    const win = res.every(x=>x==='g');
+    row++; current='';
+    if(win){ done=true; return finish(true, row); }
+    if(row>=ROWS){ done=true; return finish(false, row); }
+    say('Keep going — '+(ROWS-row)+' left.');
+  }
+
+  function handle(k){
+    if(done) return;
+    if(k==='ENTER') return submit();
+    if(k==='DEL'){ current=current.slice(0,-1); drawCurrent(); return; }
+    if(/^[A-Z]$/.test(k) && current.length<LEN){ current+=k; drawCurrent(); }
+  }
+
+  document.addEventListener('keydown',e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key==='Enter'){ handle('ENTER'); e.preventDefault(); }
+    else if(e.key==='Backspace'){ handle('DEL'); e.preventDefault(); }
+    else { const k=e.key.toUpperCase(); if(/^[A-Z]$/.test(k)){ handle(k); e.preventDefault(); } }
+  });
+
+  function finish(win, guesses){
+    const cat = win ? (GAME.ranks[guesses-1] || GAME.ranks[GAME.ranks.length-1]) : GAME.fail;
+    const scoreN = win ? guesses+'/'+ROWS : 'X/'+ROWS;
+    say(win ? 'Got it!' : 'The word was ' + ANSWER.toLowerCase() + '.');
+    const line = 'Bio Wordle — '+cat+' ('+scoreN+'): '+ANSWER;
+    $('end').innerHTML =
+      '<div class="end">'+
+        '<p class="cat">'+cat+'</p>'+
+        '<div class="grid" aria-hidden="true">'+rowGrid.join('<br>')+'</div>'+
+        '<p><span class="term">'+ANSWER.charAt(0)+ANSWER.slice(1).toLowerCase()+'</span> — '+pick.def+'</p>'+
+        '<div class="share">'+
+          '<label class="visually-hidden" for="res">Your result</label>'+
+          '<input id="res" readonly value="'+line.replace(/"/g,'&quot;')+'">'+
+          '<button class="primary" id="copy" type="button">Copy result</button>'+
+        '</div>'+
+        '<p class="nudge">Tell us your rank if you\'re thinking about joining the lab.</p>'+
+        '<p style="margin-top:1rem"><button class="btn" id="again" type="button">New word</button></p>'+
+      '</div>';
+    const input=$('res');
+    $('copy').addEventListener('click',()=>{
+      input.select(); input.setSelectionRange(0,999);
+      let ok=false; try{ok=document.execCommand('copy');}catch(e){}
+      if(navigator.clipboard){navigator.clipboard.writeText(input.value).catch(()=>{});ok=true;}
+      const b=$('copy'); const t=b.textContent; b.textContent=ok?'Copied ✓':'Select & copy';
+      setTimeout(()=>{b.textContent=t;},1400);
+    });
+    $('again').addEventListener('click',()=>location.reload());
+    $('copy').focus();
+  }
+
+  drawCurrent();
+})();
+</script>
+</body>
+</html>

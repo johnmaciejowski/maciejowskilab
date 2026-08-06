@@ -28,6 +28,7 @@
   .tally{font-size:1.05rem;margin:.4rem 0 1rem}
   .tally b{font-size:1.3rem}
   .beat{min-height:2.8em;margin:0 0 1rem}
+  .loss{color:var(--bad);font-weight:600}
   .daughters{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
   .daughter{background:var(--bg);border:2px solid var(--border);
             border-radius:var(--radius);padding:1rem .75rem;cursor:pointer;
@@ -43,6 +44,8 @@
   button.primary:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
   .result .cat{font-size:1.7rem;font-weight:700;margin:.2rem 0}
   .result .score{color:var(--muted);margin:.1rem 0 .8rem}
+  .why{font-size:.9rem;color:var(--muted);border-left:3px solid var(--border);
+       padding-left:.8rem;margin:1rem 0 0}
   .share{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
   .share input{flex:1 1 12rem;font:inherit;padding:.55rem .6rem;border:1px solid var(--border);
     border-radius:8px;background:var(--bg);color:var(--fg);min-width:0}
@@ -50,6 +53,14 @@
   .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
   @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SVKRLTYJR9');
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -57,43 +68,50 @@
 
   <!-- ===================================================================
        EDIT ME. Everything a non-coder needs is in this one object.
-       - oncogene:   name of the gene riding on the ecDNA circles
-       - startCopies / divisions: length + starting point of a run
-       - beats:      little captions shown as you play (cycled)
-       - results:    categories, checked top-down; first match whose
-                     `min` <= final copy count wins
+       - oncogene:    the gene riding on the ecDNA circles
+       - startCopies / divisions: starting count + how many cell divisions
+       - lossChance:  chance per division that a circle slips its tether and
+                      spills into the cytoplasm (the rare failure mode)
+       - beats:       captions shown as you play (cycled)
+       - results:     categories, checked top-down; first match whose
+                      `min` <= final copy count wins
+       The science: ecDNA have no centromeres, but they DON'T scatter at
+       random — they tether to chromosomes via ongoing transcription and are
+       handed to the daughter NUCLEI faithfully (Nichols et al., Mol Cell 2025).
+       What's uneven is the dose each daughter gets. Keep that framing.
        =================================================================== -->
   <script>
   const GAME = {
     oncogene: "MYC",
-    startCopies: 2,
+    startCopies: 3,
     divisions: 6,
+    lossChance: 0.12,
     beats: [
-      "These circles have no centromere — no handle for the cell to grab. Nobody's steering.",
-      "Each round the cell copies its circles, then splits. Where they land is pure luck.",
-      "Tumors keep the daughters carrying more copies. So do you: follow the bigger pile.",
-      "Even splitting would give each daughter half. But there's no machinery making it even.",
-      "Watch the count wobble — that lopsidedness is the whole point.",
-      "One lucky lineage can pull far ahead of its siblings."
+      "No centromeres — so you'd expect these to scatter at random. They don't.",
+      "They ride the chromosomes, held on by active transcription, into the daughter nuclei.",
+      "What's uneven is the dose: one daughter can inherit far more copies than the other.",
+      "That lopsided-but-faithful hand-off is what lets copy number climb in a lineage.",
+      "A tumor keeps the daughters carrying more — so follow the fuller nucleus.",
+      "The circles stay in the nucleus. Losing one to the cytoplasm is rare, and fought."
     ],
     results: [
-      { min: 40, name: "Runaway amplifier",
-        blurb: "Dozens of copies of a growth gene, all from luck plus a little selection. That's how ecDNA cranks an oncogene up to a roar." },
-      { min: 16, name: "High-copy hustler",
-        blurb: "You rode the random splits upward. In a real tumor, cells like this out-grow their neighbors and take over." },
-      { min: 6, name: "Slow climber",
-        blurb: "A modest haul — but notice you never actually steered. Every gain was the coin landing your way." },
-      { min: 1, name: "Barely hanging on",
-        blurb: "The circles kept drifting to the other daughter. Without a centromere, that's always a risk." },
-      { min: 0, name: "Cleared out",
-        blurb: "Every last circle wandered off to a sibling cell. Random inheritance giveth, and taketh away." }
+      { min: 30, name: "Runaway amplifier",
+        blurb: "Dozens of copies of a growth gene in one nucleus. Uneven inheritance plus selection is how ecDNA turns an oncogene's volume all the way up." },
+      { min: 12, name: "High-copy hustler",
+        blurb: "Copy number climbed nicely. In a real tumor, the daughters that inherit more out-grow their neighbors and take over." },
+      { min: 5, name: "Steady carrier",
+        blurb: "A modest, stable load — the circles kept riding along, just not piling up in the lineage you followed." },
+      { min: 1, name: "Dwindling lineage",
+        blurb: "You kept following the leaner daughter. The copies stayed in the family — mostly just next door." },
+      { min: 0, name: "Spilled out",
+        blurb: "The lineage you followed ran dry. The copies weren't destroyed — they went to sibling nuclei (or, rarely, the cytoplasm)." }
     ]
   };
   </script>
 
   <h1>Lucky Copies</h1>
   <p class="lede">A one-minute game about how <b>ecDNA</b> — little rings of DNA
-  carrying extra copies of a cancer gene — gets passed on when a cell divides.</p>
+  carrying extra copies of a cancer gene — is handed down when a cell divides.</p>
 
   <div id="stage" class="card" aria-live="polite"></div>
 </div>
@@ -114,10 +132,16 @@
     return s;
   }
 
-  function splitPool(pool){
-    let left = 0;
-    for(let i=0;i<pool;i++) if(R() < 0.5) left++;
-    return [left, pool - left];
+  // Faithful but UNEVEN inheritance: the whole (replicated) pool reaches the two
+  // daughter nuclei — nothing is lost except a rare cytosolic spill. The split is
+  // deliberately lopsided (uniform fraction, not a fair per-circle coin flip), which
+  // is what generates copy-number heterogeneity between daughters.
+  function distribute(pool){
+    let lost = 0;
+    if(pool > 1 && R() < GAME.lossChance) lost = 1;   // rare: a circle spills to cytoplasm
+    const kept = pool - lost;
+    const left = Math.round(kept * R());
+    return { left, right: kept - left, lost };
   }
 
   function start(){
@@ -127,27 +151,30 @@
 
   function renderChoice(){
     const pool = copies * 2;               // ecDNA replicates once per cycle
-    const [l, r] = splitPool(pool);
+    const { left:l, right:r, lost } = distribute(pool);
     const beat = GAME.beats[round % GAME.beats.length];
     const last = (round === GAME.divisions - 1);
+    const lossLine = lost
+      ? `<p class="beat loss">⚠ A circle lost its grip and spilled into the cytoplasm — gone from both daughters. That's the failure mode, and it's rare.</p>`
+      : `<p class="beat">${beat}</p>`;
     stage.innerHTML = `
       <p class="counter">Division ${round+1} of ${GAME.divisions}</p>
       <p class="tally">Carrying <b>${copies}</b> ${copies===1?'copy':'copies'} of
-        <b>${GAME.oncogene}</b> → replicated to <b>${pool}</b>, now splitting…</p>
-      <p class="beat">${beat}</p>
-      <div class="daughters" role="group" aria-label="Choose which daughter cell to follow">
+        <b>${GAME.oncogene}</b> → copied to <b>${pool}</b>, now handed to the two daughter nuclei…</p>
+      ${lossLine}
+      <div class="daughters" role="group" aria-label="Choose which daughter nucleus to follow">
         <button class="daughter" data-n="${l}">
-          <span class="lab">Left daughter</span>
+          <span class="lab">Left nucleus</span>
           <span class="num">${l}</span>
           <span class="dots" aria-hidden="true">${dots(l)}</span>
         </button>
         <button class="daughter" data-n="${r}">
-          <span class="lab">Right daughter</span>
+          <span class="lab">Right nucleus</span>
           <span class="num">${r}</span>
           <span class="dots" aria-hidden="true">${dots(r)}</span>
         </button>
       </div>
-      <p class="nudge">${last ? 'Last division — pick a daughter to finish.' : 'Follow whichever daughter you like. (← / → keys work too.)'}</p>
+      <p class="nudge">${last ? 'Last division — pick a nucleus to finish.' : 'Follow whichever daughter you like. (← / → keys work too.)'}</p>
     `;
     const btns = [...stage.querySelectorAll('.daughter')];
     btns.forEach(b => b.addEventListener('click', () => choose(+b.dataset.n)));
@@ -180,6 +207,13 @@
         <p class="cat">${cat.name}</p>
         <p class="score">Final tally: <b>${copies}</b> ${copies===1?'copy':'copies'} of ${GAME.oncogene}</p>
         <p>${cat.blurb}</p>
+        <p class="why">Why it works this way: ecDNA have no centromeres, but they don't
+          scatter at random — this lab showed they tether to chromosomes through ongoing
+          transcription and reach the daughter nuclei with high fidelity
+          (Nichols et al., <i>Molecular Cell</i>, 2025). What's uneven is the dose each
+          daughter gets, and that lopsided inheritance is what drives copy-number
+          heterogeneity and lets an oncogene amplify. Spilling a circle into the cytoplasm
+          is the rare failure the cell actively prevents.</p>
         <div class="share">
           <label class="visually-hidden" for="res">Your result</label>
           <input id="res" readonly value="${line.replace(/"/g,'&quot;')}">
@@ -191,8 +225,7 @@
       </div>`;
     const input = document.getElementById('res');
     document.getElementById('copy').addEventListener('click', ()=>copy(input));
-    const again = document.getElementById('again');
-    again.addEventListener('click', start);
+    document.getElementById('again').addEventListener('click', start);
     document.getElementById('copy').focus();
   }
 
