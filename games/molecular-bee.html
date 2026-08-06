@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Molecular Spelling Bee — Maciejowski Lab</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#191919; --muted:#5f5f5f;
+    --card:#f5f5f4; --border:#e2e2df;
+    --accent:#3b6ea5; --accent-ink:#ffffff;
+    --center:#d8a72b; --center-ink:#191919;
+    --good:#2e7d5b; --bad:#a5453b;
+    --radius:14px; --gap:1rem; --maxw:640px;
+    --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);
+       line-height:1.5;padding:1.25rem}
+  .wrap{max-width:var(--maxw);margin:0 auto}
+  a{color:var(--accent)}
+  .back{display:inline-block;font-size:.9rem;margin-bottom:1rem}
+  h1{font-size:1.6rem;margin:.2rem 0}
+  .lede{color:var(--muted);margin:.25rem 0 1rem}
+  .card{background:var(--card);border:1px solid var(--border);
+        border-radius:var(--radius);padding:1.1rem;margin-bottom:1rem}
+  .rankbar{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+  .rankbar .rank{font-weight:700;font-size:1.15rem}
+  .rankbar .pts{color:var(--muted);font-size:.9rem}
+  .current{font-size:1.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+           min-height:1.5em;text-align:center;margin:.2rem 0 .3rem}
+  .current .off{color:var(--bad)}
+  .status{min-height:1.4em;text-align:center;color:var(--muted);font-size:.95rem}
+  .hive{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin:.8rem 0}
+  .hrow{display:flex;gap:.5rem}
+  .cell{width:4.2rem;height:4.2rem;border:none;border-radius:14px;font:inherit;
+        font-size:1.5rem;font-weight:700;text-transform:uppercase;cursor:pointer;
+        background:var(--card);border:1px solid var(--border);color:var(--fg);
+        transition:transform .1s}
+  .cell:active{transform:scale(.94)}
+  .cell.center{background:var(--center);color:var(--center-ink);border-color:var(--center)}
+  .cell:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 50%,transparent);outline-offset:2px}
+  .controls{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.4rem}
+  button.btn{font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--border);
+    border-radius:999px;padding:.6rem 1.1rem;cursor:pointer}
+  button.btn:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+  button.primary{font:inherit;background:var(--accent);color:var(--accent-ink);border:none;
+    border-radius:999px;padding:.6rem 1.2rem;cursor:pointer}
+  button.primary:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+  .found h2{font-size:1rem;margin:.2rem 0 .5rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem}
+  .chip{background:var(--bg);border:1px solid var(--border);border-radius:999px;
+        padding:.2rem .6rem;font-size:.85rem}
+  .chip.bio{border-color:var(--center);background:color-mix(in srgb,var(--center) 18%,var(--bg))}
+  .def{font-size:.9rem;color:var(--muted);margin:.5rem 0 0}
+  .share{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+  .share input{flex:1 1 12rem;font:inherit;padding:.55rem .6rem;border:1px solid var(--border);
+    border-radius:8px;background:var(--bg);color:var(--fg);min-width:0}
+  .nudge{font-size:.9rem;color:var(--muted);margin-top:.8rem}
+  .reveal li{margin:.35rem 0}
+  .reveal .term{font-weight:700}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Lab games</a>
+  <h1>Molecular Spelling Bee</h1>
+  <p class="lede">Make words of 4+ letters. Every word must use the
+  <b>gold</b> letter. Ordinary words count — but the
+  <b>molecular-biology</b> words are worth finding.</p>
+
+  <!-- ===================================================================
+       EDIT ME to make a new puzzle. You need:
+       - center:  the required (gold) letter
+       - outer:   the six other letters
+       - words:   every accepted word (UPPERCASE). Give a definition string
+                  to the biology words (they show up highlighted + teach the
+                  player); use null for ordinary words.
+                  Make sure a "pangram" using ALL SEVEN letters exists.
+       - ranks:   name tiers by fraction of the maximum score (low→high)
+       Tip: pick your letters so a nice bio word is the pangram.
+       =================================================================== -->
+  <script>
+  const PUZZLE = {
+    center: "E",
+    outer: ["C","G","I","M","N","O"],
+    words: {
+      GENE:     "A stretch of DNA that spells out something the cell can build.",
+      GENOME:   "The complete set of DNA instructions in a cell.",
+      GENOMIC:  "Having to do with the genome. (This one uses all seven letters!)",
+      ONCOGENE: "A gene that, turned up too loud, can push a cell toward cancer — just the kind of gene that ecDNA carries in extra copies.",
+      GENIE:    null, GNOME: null, GONE: null, OMEN: null, MIEN: null,
+      NICE:     null, MICE: null, NIECE: null, ONCE: null, COME: null,
+      INCOME:   null, MEME: null, MINCE: null, CONGE: null
+    },
+    ranks: [
+      { at: 0.00, name: "Just curious" },
+      { at: 0.05, name: "Undergrad" },
+      { at: 0.15, name: "Rotation student" },
+      { at: 0.30, name: "Grad student" },
+      { at: 0.50, name: "Postdoc" },
+      { at: 0.70, name: "PI" },
+      { at: 0.90, name: "Genius (Nobel bait)" }
+    ]
+  };
+  </script>
+
+  <div class="card">
+    <div class="rankbar">
+      <span class="rank" id="rank">—</span>
+      <span class="pts" id="pts"></span>
+    </div>
+    <div class="current" id="current" aria-live="polite"></div>
+    <div class="status" id="status" aria-live="polite">Tap or type letters to spell a word.</div>
+
+    <div class="hive" id="hive"></div>
+    <div class="controls">
+      <button class="btn" id="delete" type="button">Delete</button>
+      <button class="btn" id="shuffle" type="button">Shuffle</button>
+      <button class="primary" id="enter" type="button">Enter</button>
+    </div>
+  </div>
+
+  <div class="card found">
+    <h2 id="foundhead">No words yet</h2>
+    <div class="chips" id="chips"></div>
+    <p class="def" id="lastdef"></p>
+    <p style="margin-top:1rem"><button class="btn" id="done" type="button">I'm done — show my rank</button></p>
+  </div>
+
+  <div id="endcard"></div>
+</div>
+
+<script>
+(function(){
+  const LETTERS = [PUZZLE.center, ...PUZZLE.outer];
+  const SET = new Set(LETTERS);
+  const ALL7 = new Set(LETTERS);            // for pangram test
+  const found = new Set();
+  let current = "";
+  let order = PUZZLE.outer.slice();
+
+  // ---- scoring ----
+  function isPangram(w){
+    const s = new Set(w.split(''));
+    if(s.size !== 7) return false;
+    for(const l of ALL7) if(!s.has(l)) return false;
+    return true;
+  }
+  function pointsFor(w){
+    let p = (w.length === 4) ? 1 : w.length;
+    if(isPangram(w)) p += 7;
+    return p;
+  }
+  const MAX = Object.keys(PUZZLE.words).reduce((a,w)=>a+pointsFor(w), 0);
+  function score(){ let s=0; found.forEach(w=>s+=pointsFor(w)); return s; }
+  function rankFor(s){
+    const frac = MAX ? s/MAX : 0;
+    let r = PUZZLE.ranks[0];
+    for(const t of PUZZLE.ranks) if(frac >= t.at) r = t;
+    return r;
+  }
+
+  // ---- elements ----
+  const $ = id => document.getElementById(id);
+  const hive = $('hive');
+
+  function drawHive(){
+    hive.innerHTML = '';
+    const rows = [[order[0],order[1]],[order[2],PUZZLE.center,order[3]],[order[4],order[5]]];
+    rows.forEach(r=>{
+      const row = document.createElement('div'); row.className='hrow';
+      r.forEach(L=>{
+        const b=document.createElement('button');
+        b.type='button'; b.className='cell'+(L===PUZZLE.center?' center':'');
+        b.textContent=L; b.setAttribute('aria-label','Letter '+L+(L===PUZZLE.center?' (required)':''));
+        b.addEventListener('click',()=>add(L));
+        row.appendChild(b);
+      });
+      hive.appendChild(row);
+    });
+  }
+
+  function renderCurrent(){
+    const el = $('current'); el.innerHTML='';
+    for(const ch of current){
+      const span=document.createElement('span');
+      if(!SET.has(ch)) span.className='off';
+      span.textContent=ch; el.appendChild(span);
+    }
+  }
+  function renderScore(){
+    const s=score(), r=rankFor(s);
+    $('rank').textContent=r.name;
+    $('pts').textContent = s+' point'+(s===1?'':'s')+' · '+found.size+' word'+(found.size===1?'':'s');
+  }
+  function renderFound(){
+    $('foundhead').textContent = found.size ? ('Found '+found.size) : 'No words yet';
+    const chips=$('chips'); chips.innerHTML='';
+    [...found].sort().forEach(w=>{
+      const c=document.createElement('span');
+      c.className='chip'+(PUZZLE.words[w]?' bio':'');
+      c.textContent=w.toLowerCase(); chips.appendChild(c);
+    });
+  }
+
+  // ---- actions ----
+  function add(L){ current += L; renderCurrent(); }
+  function del(){ current = current.slice(0,-1); renderCurrent(); }
+  function shuffle(){
+    for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+    drawHive();
+  }
+  function say(msg,kind){ const s=$('status'); s.textContent=msg; s.style.color = kind==='good' ? 'var(--good)' : kind==='bad' ? 'var(--bad)' : 'var(--muted)'; }
+
+  function submit(){
+    const w = current.toUpperCase();
+    current=''; renderCurrent();
+    if(w.length < 4){ return say('Too short — words need 4+ letters.','bad'); }
+    if(!w.includes(PUZZLE.center)){ return say('Missing the gold letter ('+PUZZLE.center+').','bad'); }
+    for(const ch of w){ if(!SET.has(ch)) return say('That uses a letter that isn\'t in the hive.','bad'); }
+    if(found.has(w)){ return say('Already found “'+w.toLowerCase()+'”.','muted'); }
+    if(!(w in PUZZLE.words)){ return say('Not in this puzzle\'s word list.','bad'); }
+    // accepted
+    found.add(w);
+    const pts = pointsFor(w);
+    const bonus = isPangram(w) ? ' — pangram! 🎉' : '';
+    say('“'+w.toLowerCase()+'” +'+pts+bonus, 'good');
+    const def = PUZZLE.words[w];
+    $('lastdef').textContent = def ? (w.charAt(0)+w.slice(1).toLowerCase()+': '+def) : '';
+    renderScore(); renderFound();
+  }
+
+  // ---- results ----
+  function showEnd(){
+    const s=score(), r=rankFor(s);
+    const bioWords = Object.keys(PUZZLE.words).filter(w=>PUZZLE.words[w]);
+    const gotBio = bioWords.filter(w=>found.has(w));
+    const line = 'Molecular Spelling Bee — '+r.name+' ('+s+'/'+MAX+' points, '+found.size+' words)';
+    const list = bioWords.map(w=>{
+      const hit = found.has(w);
+      return '<li><span class="term">'+w.charAt(0)+w.slice(1).toLowerCase()+'</span> '+
+             (hit?'✓':'·')+' — '+PUZZLE.words[w]+'</li>';
+    }).join('');
+    $('endcard').innerHTML =
+      '<div class="card">'+
+        '<div class="rankbar"><span class="rank">'+r.name+'</span>'+
+          '<span class="pts">'+s+' / '+MAX+' points · '+found.size+' words</span></div>'+
+        '<p style="margin:.6rem 0 0">You found <b>'+gotBio.length+'</b> of '+bioWords.length+
+          ' biology words. Here they all are — the ones you missed are worth a look:</p>'+
+        '<ul class="reveal">'+list+'</ul>'+
+        '<div class="share">'+
+          '<label class="visually-hidden" for="res">Your result</label>'+
+          '<input id="res" readonly value="'+line.replace(/"/g,'&quot;')+'">'+
+          '<button class="primary" id="copy" type="button">Copy result</button>'+
+        '</div>'+
+        '<p class="nudge">Tell us your rank if you\'re thinking about joining — '+
+          '“Postdoc” on the first try earns a knowing nod.</p>'+
+      '</div>';
+    const input=$('res');
+    $('copy').addEventListener('click',()=>{
+      input.select(); input.setSelectionRange(0,999);
+      let ok=false; try{ok=document.execCommand('copy');}catch(e){}
+      if(navigator.clipboard){navigator.clipboard.writeText(input.value).catch(()=>{});ok=true;}
+      const b=$('copy'); const t=b.textContent; b.textContent=ok?'Copied ✓':'Select & copy';
+      setTimeout(()=>{b.textContent=t;},1400);
+    });
+    $('endcard').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto':'smooth', block:'start'});
+  }
+
+  // ---- wire up ----
+  $('delete').addEventListener('click',del);
+  $('shuffle').addEventListener('click',shuffle);
+  $('enter').addEventListener('click',submit);
+  $('done').addEventListener('click',showEnd);
+  document.addEventListener('keydown',e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    const k=e.key.toUpperCase();
+    if(SET.has(k)){ add(k); e.preventDefault(); }
+    else if(e.key==='Backspace'){ del(); e.preventDefault(); }
+    else if(e.key==='Enter'){ submit(); e.preventDefault(); }
+  });
+
+  drawHive(); renderCurrent(); renderScore(); renderFound();
+})();
+</script>
+</body>
+</html>
