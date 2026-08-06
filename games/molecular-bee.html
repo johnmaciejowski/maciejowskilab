@@ -92,25 +92,28 @@
        =================================================================== -->
   <script>
   const PUZZLE = {
-    center: "E",
-    outer: ["C","G","I","M","N","O"],
+    center: "R",
+    outer: ["P","O","T","E","I","N"],
     words: {
-      GENE:     "A stretch of DNA that spells out something the cell can build.",
-      GENOME:   "The complete set of DNA instructions in a cell.",
-      GENOMIC:  "Having to do with the genome. (This one uses all seven letters!)",
-      ONCOGENE: "A gene that, turned up too loud, can push a cell toward cancer — just the kind of gene that ecDNA carries in extra copies.",
-      GENIE:    null, GNOME: null, GONE: null, OMEN: null, MIEN: null,
-      NICE:     null, MICE: null, NIECE: null, ONCE: null, COME: null,
-      INCOME:   null, MEME: null, MINCE: null, CONGE: null
+      PROTEIN:  "The molecular machines a cell builds from amino acids. (Uses all seven letters!)",
+      PRION:    "A misfolded protein that can turn its neighbors bad — infectious without any DNA.",
+      PORE:     "As in nuclear pore — a gateway through the envelope that wraps the nucleus.",
+      TITER:    "How concentrated something is in a sample (antibodies, virus), read off a dilution series.",
+      POINTER:  null, ORIENT: null, PRINT: null, PRONE: null, REPOT: null,
+      TONER:    null, TENOR: null, TRINE: null, NITER: null, NITRO: null,
+      INTRO:    null, INTER: null, INERT: null, RIPEN: null, TRIPE: null,
+      RIPE:     null, RITE: null, RIOT: null, RENT: null, REIN: null,
+      ROTE:     null, ROPE: null, PORT: null, TIRE: null, TIER: null,
+      TORE:     null, TRIO: null, TRIP: null, TERN: null
     },
     ranks: [
-      { at: 0.00, name: "Just curious" },
-      { at: 0.05, name: "Undergrad" },
-      { at: 0.15, name: "Rotation student" },
-      { at: 0.30, name: "Grad student" },
-      { at: 0.50, name: "Postdoc" },
-      { at: 0.70, name: "PI" },
-      { at: 0.90, name: "Genius (Nobel bait)" }
+      { at: 0.00, name: "Just landed" },
+      { at: 0.05, name: "Warming up" },
+      { at: 0.15, name: "Buzzing along" },
+      { at: 0.30, name: "In the zone" },
+      { at: 0.50, name: "On fire" },
+      { at: 0.70, name: "Hive mind" },
+      { at: 0.90, name: "Queen bee" }
     ]
   };
   </script>
@@ -264,8 +267,8 @@
           '<input id="res" readonly value="'+line.replace(/"/g,'&quot;')+'">'+
           '<button class="primary" id="copy" type="button">Copy result</button>'+
         '</div>'+
-        '<p class="nudge">Tell us your rank if you\'re thinking about joining — '+
-          '“Postdoc” on the first try earns a knowing nod.</p>'+
+        '<p class="nudge">Tell us your rank if you\'re thinking about joining the lab — '+
+          '“Queen bee” earns a knowing nod.</p>'+
       '</div>';
     const input=$('res');
     $('copy').addEventListener('click',()=>{
