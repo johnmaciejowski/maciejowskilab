@@ -10,7 +10,14 @@
     "",
     "Render DOI links as https://doi.org/<doi>.",
     "Sections render in the order listed under 'sections'.",
-    "Within each section, reverse chronological."
+    "Within each section, reverse chronological.",
+    "",
+    "'selected' drives the 'Selected publications' lists on the research pages.",
+    "Each key is a page path; each value is an ordered list of { doi } drawn",
+    "from 'publications' below (order is curated, not chronological). Add an",
+    "optional 'authors' to override a very long author list for that one entry.",
+    "The build renders them with the same DOI/PubMed links as the Publications",
+    "page. Do not hand-edit those lists in the HTML."
   ],
   "sections": [
     {
@@ -34,6 +41,28 @@
       "label": "Graduate and earlier work"
     }
   ],
+  "selected": {
+    "research/ecdna.html": [
+      { "doi": "10.1016/j.molcel.2025.06.013" },
+      { "doi": "10.1016/j.xpro.2025.104241" },
+      { "doi": "10.1038/s41467-025-56670-8", "authors": "Raeisi Dehkordi S, et al., including Maciejowski J" }
+    ],
+    "research/apobec3a.html": [
+      { "doi": "10.64898/2026.05.24.727500" },
+      { "doi": "10.64898/2026.03.09.710641" },
+      { "doi": "10.1038/s41586-022-04972-y" },
+      { "doi": "10.1038/s41588-020-0667-5" },
+      { "doi": "10.1038/s41588-022-01196-8" }
+    ],
+    "research/immunity.html": [
+      { "doi": "10.1016/j.molcel.2026.02.012" },
+      { "doi": "10.1158/2326-6066.CIR-23-1093" },
+      { "doi": "10.1093/hmg/ddae089" },
+      { "doi": "10.1016/j.molcel.2020.12.037" },
+      { "doi": "10.1016/j.molcel.2021.01.024" },
+      { "doi": "10.1016/j.molcel.2025.08.030" }
+    ]
+  },
   "publications": [
     {
       "section": "preprints",
