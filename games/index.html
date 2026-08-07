@@ -5,19 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Games — Maciejowski Lab</title>
   <link rel="stylesheet" href="../css/style.css">
-  <style>
-    /* Minimal placeholder layout — the site-wide visual pass can replace this. */
-    :root{ --border:#e2e2df; --muted:#5f5f5f; --accent:#3b6ea5; --radius:14px; }
-    .games{list-style:none;padding:0;margin:1.25rem 0;display:grid;gap:1rem;
-           grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
-    .games a{display:block;height:100%;padding:1.1rem;border:1px solid var(--border);
-             border-radius:var(--radius);text-decoration:none;color:inherit}
-    .games a:hover,.games a:focus-visible{border-color:var(--accent);outline:none}
-    .games h2{margin:.1rem 0 .3rem;font-size:1.15rem}
-    .games p{margin:0;color:var(--muted);font-size:.95rem}
-    .tag{display:inline-block;font-size:.75rem;color:var(--muted);
-         border:1px solid var(--border);border-radius:999px;padding:.05rem .5rem;margin-top:.5rem}
-  </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
   <script>
@@ -41,15 +28,17 @@
     </nav>
   </header>
   <main class="container">
+    <p class="eyebrow">You found the games</p>
     <h1>Games</h1>
-    <p>Little playable things about what we study. Each one gives you a result —
-    tell us what you got.</p>
+    <p>Little playable things about what we study. Each one gives you a result — tell us what you got.</p>
 
     <!-- EDIT ME: add or reorder games here. "href" is the game's file (or a full
          URL for something hosted elsewhere). Set "external:true" for an off-site
          link so it opens in a new tab. -->
     <ul class="games" id="games"></ul>
   </main>
+
+  <footer id="site-footer"></footer>
 
   <script>
     const GAMES = [
@@ -86,8 +75,6 @@
       ul.appendChild(li);
     });
   </script>
-
-  <footer id="site-footer"></footer>
   <script src="../js/footer.js"></script>
 </body>
 </html>

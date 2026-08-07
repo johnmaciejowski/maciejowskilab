@@ -283,6 +283,75 @@ tbody td:last-child { padding-right: 0; }
 .home-join { border-top: 1px solid var(--line); padding-top: 32px; }
 .home-join p { max-width: 46em; }
 
+/* ---- Research article -------------------------------------------------- */
+.article-lede { font-size: 20px; line-height: 1.6; color: var(--ink); max-width: 40em; }
+.prose > p { font-size: 16.5px; line-height: 1.68; margin: 16px 0 0; max-width: 42em; }
+.prose > p:first-child { margin-top: 0; }
+.article-section + .article-section { margin-top: 48px; }
+.article-section > h2 { border-bottom-width: 2px; border-bottom-color: var(--ink); }
+.article-section > h2 + .prose { margin-top: 22px; }
+
+.figure-block { margin: 34px 0 0; }
+.figure-block .figure-placeholder,
+.figure-placeholder {
+  aspect-ratio: 2 / 1; border: 1px solid var(--ink);
+  background: repeating-linear-gradient(135deg,#f2f3f5,#f2f3f5 11px,#e9eaec 11px,#e9eaec 22px);
+  display: flex; align-items: center; justify-content: center;
+}
+.figure-block figcaption {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  margin-top: 12px; line-height: 1.55;
+}
+.slot-note {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  background: rgba(255,255,255,.85); border: 1px solid var(--line); padding: 7px 11px;
+}
+
+.oq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.oq { background: var(--paper); padding: 22px 24px; }
+.oq .oq-num { font-family: var(--mono); font-size: 11px; color: var(--accent); }
+.oq h3 { font-size: 15.5px; margin: 10px 0 8px; }
+.oq p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--body); }
+
+.selected-pubs { list-style: none; margin: 0; padding: 0; counter-reset: sp; }
+.selected-pubs li {
+  counter-increment: sp; display: grid; grid-template-columns: 34px 1fr; gap: 16px;
+  padding: 15px 0; border-bottom: 1px solid var(--line-soft); font-size: 15.5px; line-height: 1.5;
+}
+.selected-pubs li::before { content: counter(sp, decimal-leading-zero); font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.selected-pubs em { font-style: italic; color: var(--ink); }
+.article-foot { margin-top: 30px; font-size: 15.5px; color: var(--muted); }
+
+/* A quiet buried link — reads as body text until hovered (easter egg). */
+.egg { color: inherit; text-decoration: none; border-bottom: 1px dotted transparent; }
+.egg:hover { color: var(--accent); border-bottom-color: var(--accent-line); text-decoration: none; }
+
+/* ---- Games ------------------------------------------------------------- */
+.games { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 1px;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); background: var(--line); border: 1px solid var(--line); }
+.games a { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 22px 22px 24px;
+  background: var(--paper); color: var(--ink); text-decoration: none; }
+.games a:hover { background: #fafbfc; text-decoration: none; }
+.games h2 { border: 0; padding: 0; font-family: var(--sans); font-size: 17px; font-weight: 600; text-transform: none; letter-spacing: -0.01em; color: var(--ink); }
+.games p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+.games .tag { margin-top: auto; align-self: flex-start; font-family: var(--mono); font-size: 11px;
+  color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
+
+/* ---- Content pages (Resources, Join) ----------------------------------- */
+.join-project {
+  margin: 34px 0 0; padding-top: 18px; border-top: 1px solid var(--line);
+  font-size: 19px;
+}
+.join-project:first-of-type { margin-top: 24px; }
+.container section > h3 { margin: 26px 0 0; font-size: 17px; }
+.container section > p { margin: 14px 0 0; max-width: 46em; }
+.container section > ul { margin: 14px 0 0; padding-left: 1.15em; max-width: 46em; }
+.container section > ul > li { margin: 5px 0; color: var(--body); }
+.container p a, .container li a { overflow-wrap: anywhere; }
+.container section > p a[href^="http"], .container section > p a[href^="https"] {
+  font-family: var(--mono); font-size: 13.5px;
+}
+
 /* ---- Publications ------------------------------------------------------ */
 .pub-layout {
   display: grid;
