@@ -76,9 +76,9 @@ header nav a:hover { color: var(--accent); text-decoration: none; }
 
 /* ---- Layout ------------------------------------------------------------ */
 .page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
-.page-head-mark { flex-shrink: 0; margin-top: 56px; }
-.page-head-mark svg { width: 52px; height: 52px; display: block; }
-@media (max-width: 640px) { .page-head-mark { margin-top: 40px; } .page-head-mark svg { width: 40px; height: 40px; } }
+.page-head-mark { flex-shrink: 0; margin-top: 60px; }
+.page-head-mark svg { width: 32px; height: 32px; display: block; }
+@media (max-width: 640px) { .page-head-mark { margin-top: 42px; } .page-head-mark svg { width: 26px; height: 26px; } }
 .container {
   max-width: 1080px;
   margin: 0 auto;
@@ -236,9 +236,9 @@ tbody td:last-child { padding-right: 0; }
 .hero-placeholder { aspect-ratio: 2 / 1; margin: 24px 0; }
 
 /* ---- Home -------------------------------------------------------------- */
-.home-banner { max-width: 1080px; margin: 0 auto; padding: 24px 32px 0; }
+.home-banner { margin: 0; padding: 24px 0 4px; }
 .home-banner img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
-.home-intro { padding: 40px 0 8px; }
+.home-intro { padding: 36px 0 8px; }
 .home-intro .eyebrow { margin: 0 0 20px; }
 .home-intro p:last-child { margin: 0; max-width: 46em; font-size: 18.5px; line-height: 1.6; }
 
@@ -264,7 +264,7 @@ tbody td:last-child { padding-right: 0; }
 }
 .research-card:hover { background: #fafbfc; text-decoration: none; }
 .research-card-head { display: flex; align-items: center; justify-content: space-between; }
-.research-card-head svg { width: 40px; height: 40px; display: block; }
+.research-card-head svg { width: 24px; height: 24px; display: block; flex: 0 0 auto; }
 .research-card .research-num { font-family: var(--mono); font-size: 12px; color: var(--accent); }
 .research-card h3 { font-size: 19px; }
 .research-card p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted); }
@@ -446,7 +446,7 @@ tbody td:last-child { padding-right: 0; }
   #site-footer address { padding: 28px 20px; }
   .pub-list li { grid-template-columns: 28px 1fr; gap: 12px; }
   .pub-links { margin-left: 0; margin-top: 6px; display: flex; }
-  .home-banner { padding: 16px 20px 0; }
+  .home-banner { padding: 16px 0 0; }
   .home-intro { padding: 28px 0 4px; }
   .home-intro p:last-child { font-size: 17px; }
   .research-cards { grid-template-columns: 1fr; }
