@@ -69,10 +69,10 @@ header nav ul {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 20px;
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
+  font-size: 15px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 header nav a { color: var(--muted); }
@@ -148,7 +148,7 @@ tbody td {
 tbody td:last-child { padding-right: 0; }
 .roster td:first-child { font-weight: 500; color: var(--ink); }
 .roster td:last-child {
-  font-family: var(--mono); font-size: 13px; color: var(--muted);
+  font-family: var(--mono); font-size: 13px; color: var(--body);
   text-align: right; white-space: nowrap;
 }
 .alumni .years { font-family: var(--mono); font-size: 13px; color: var(--muted); white-space: nowrap; }
@@ -239,15 +239,17 @@ tbody td:last-child { padding-right: 0; }
 .home-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  align-items: center;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 8px 32px 4px;
   border-bottom: 1px solid var(--line);
 }
-.home-statement {
-  padding: 56px 48px 56px max(32px, calc((100vw - 1080px) / 2 + 32px));
-  align-self: center;
-}
+.home-statement { padding: 44px 0; }
 .home-statement .eyebrow { margin: 0 0 22px; }
-.home-statement p:last-child { margin: 0; font-size: 18.5px; line-height: 1.6; max-width: 40em; }
-.home-hero-media { border: 0; border-left: 1px solid var(--line); min-height: 420px; aspect-ratio: auto; margin: 0; }
+.home-statement p:last-child { margin: 0; font-size: 18.5px; line-height: 1.6; }
+.home-hero-media { border: 1px solid var(--line); min-height: 400px; aspect-ratio: auto; margin: 0; }
 
 .home-section { margin-top: 52px; }
 .home-section > h2 + * { margin-top: 24px; }
@@ -370,6 +372,8 @@ tbody td:last-child { padding-right: 0; }
   margin-top: 44px;
   align-items: start;
 }
+.pub-layout.no-toc { grid-template-columns: 1fr; }
+.pub-layout.no-toc .pub-body { max-width: 46em; }
 .pub-toc { position: sticky; top: 24px; }
 .pub-toc-head {
   font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em;
@@ -438,9 +442,9 @@ tbody td:last-child { padding-right: 0; }
   #site-footer address { padding: 28px 20px; }
   .pub-list li { grid-template-columns: 28px 1fr; gap: 12px; }
   .pub-links { margin-left: 0; margin-top: 6px; display: flex; }
-  .home-hero { grid-template-columns: 1fr; }
-  .home-statement { padding: 36px 20px; }
+  .home-hero { grid-template-columns: 1fr; gap: 0; padding: 0 20px; }
+  .home-statement { padding: 32px 0; }
   .home-statement p:last-child { font-size: 17px; }
-  .home-hero-media { border-left: 0; border-top: 1px solid var(--line); min-height: 220px; }
+  .home-hero-media { min-height: 220px; margin-bottom: 8px; }
   .research-cards { grid-template-columns: 1fr; }
 }
