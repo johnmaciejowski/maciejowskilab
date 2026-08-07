@@ -312,10 +312,13 @@ tbody td:last-child { padding-right: 0; }
 
 .selected-pubs { list-style: none; margin: 0; padding: 0; counter-reset: sp; }
 .selected-pubs li {
-  counter-increment: sp; display: grid; grid-template-columns: 34px 1fr; gap: 16px;
-  padding: 15px 0; border-bottom: 1px solid var(--line-soft); font-size: 15.5px; line-height: 1.5;
+  counter-increment: sp; position: relative; padding: 15px 0 15px 34px;
+  border-bottom: 1px solid var(--line-soft); font-size: 15.5px; line-height: 1.5;
 }
-.selected-pubs li::before { content: counter(sp, decimal-leading-zero); font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.selected-pubs li::before {
+  content: counter(sp, decimal-leading-zero); position: absolute; left: 0; top: 15px;
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+}
 .selected-pubs em { font-style: italic; color: var(--ink); }
 .article-foot { margin-top: 30px; font-size: 15.5px; color: var(--muted); }
 
