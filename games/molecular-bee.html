@@ -83,9 +83,10 @@
        EDIT ME to make a new puzzle. You need:
        - center:  the required (gold) letter
        - outer:   the six other letters
-       - words:   every accepted word (UPPERCASE). Give a definition string
-                  to the biology words (they show up highlighted + teach the
-                  player); use null for ordinary words.
+       - words:   the biology words to highlight, each with a definition string
+                  (they show up highlighted + teach the player). Everyday words
+                  are accepted automatically from the bundled dictionary
+                  (bee-words.js), so you only need to list biology terms here.
                   Make sure a "pangram" using ALL SEVEN letters exists.
        - ranks:   name tiers by fraction of the maximum score (low→high)
        Tip: pick your letters so a nice bio word is the pangram.
@@ -144,6 +145,7 @@
   <div id="endcard"></div>
 </div>
 
+<script src="bee-words.js"></script>
 <script>
 (function(){
   const LETTERS = [PUZZLE.center, ...PUZZLE.outer];
@@ -165,7 +167,23 @@
     if(isPangram(w)) p += 7;
     return p;
   }
-  const MAX = Object.keys(PUZZLE.words).reduce((a,w)=>a+pointsFor(w), 0);
+  // Valid guesses for THIS puzzle: every real English word from the bundled
+  // dictionary (bee-words.js) that is 4+ letters, contains the center letter, and
+  // uses only the seven hive letters — plus the curated biology words, so those
+  // are always accepted. This is the single source for both acceptance and MAX.
+  function validWordsForPuzzle(){
+    const dict = (typeof window!=='undefined' && window.BEE_WORDS) ? window.BEE_WORDS : new Set();
+    const valid = new Set(Object.keys(PUZZLE.words).map(w=>w.toUpperCase()));
+    dict.forEach(function(w){
+      const W = w.toUpperCase();
+      if(W.length < 4 || W.indexOf(PUZZLE.center) === -1) return;
+      for(const ch of W){ if(!SET.has(ch)) return; }
+      valid.add(W);
+    });
+    return valid;
+  }
+  const VALID = validWordsForPuzzle();
+  const MAX = [...VALID].reduce((a,w)=>a+pointsFor(w), 0);
   function score(){ let s=0; found.forEach(w=>s+=pointsFor(w)); return s; }
   function rankFor(s){
     const frac = MAX ? s/MAX : 0;
@@ -233,7 +251,7 @@
     if(!w.includes(PUZZLE.center)){ return say('Missing the gold letter ('+PUZZLE.center+').','bad'); }
     for(const ch of w){ if(!SET.has(ch)) return say('That uses a letter that isn\'t in the hive.','bad'); }
     if(found.has(w)){ return say('Already found “'+w.toLowerCase()+'”.','muted'); }
-    if(!(w in PUZZLE.words)){ return say('Not in this puzzle\'s word list.','bad'); }
+    if(!VALID.has(w)){ return say('Not a word I know.','bad'); }
     // accepted
     found.add(w);
     const pts = pointsFor(w);
