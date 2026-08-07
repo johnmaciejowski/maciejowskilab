@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>People — Maciejowski Lab</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="favicon.svg">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
   <script>
@@ -17,6 +18,15 @@
 <body>
   <header>
     <nav>
+      <a class="brand" href="index.html" aria-label="Maciejowski Lab — home">
+        <svg viewBox="0 0 300 52" role="img" aria-label="Maciejowski Lab" style="overflow:visible;">
+          <clipPath id="wm-t"><rect x="-20" y="0" width="360" height="24"/></clipPath>
+          <clipPath id="wm-b"><rect x="-20" y="28" width="360" height="28"/></clipPath>
+          <g clip-path="url(#wm-t)"><text x="0" y="40" font-family="system-ui,Arial,sans-serif" font-weight="600" font-size="40" letter-spacing="-1.5" fill="#111214">Maciejowski Lab</text></g>
+          <g clip-path="url(#wm-b)"><text x="6" y="40" font-family="system-ui,Arial,sans-serif" font-weight="600" font-size="40" letter-spacing="-1.5" fill="#111214">Maciejowski Lab</text></g>
+          <line x1="-2" y1="26" x2="288" y2="26" stroke="#2f52c9" stroke-width="2.5"/>
+        </svg>
+      </a>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="people.html">People</a></li>
@@ -99,7 +109,9 @@
       </article>
 
       <article class="bio">
-        <img class="portrait" src="images/people/marton-kovacs.jpg" alt="Marton Kovacs">
+        <!-- Marton's headshot pending. Marked empty container until a photo is supplied — do not substitute. -->
+        <div class="portrait-mono">MK</div>
+        <p class="flag">Photo pending</p>
         <div class="body">
           <h3>Marton Kovacs, PhD</h3>
           <div class="meta">Postdoctoral Fellow · he/him</div>
@@ -159,7 +171,7 @@
       </article>
 
       <article class="bio">
-        <!-- Adonis's spirit vegetable still pending. -->
+        <!-- TODO: Adonis's photo below is a phone selfie, inconsistent with the studio set — recommend a reshoot. Spirit vegetable still pending. -->
         <img class="portrait" src="images/people/adonis-john.jpg" alt="Adonis John">
         <div class="body">
           <h3>Adonis John</h3>
@@ -210,7 +222,7 @@
               <td>Graduate Student</td><td class="years">2019–2025</td><td><!-- HOLD: awaiting Yanyang's reply. Do not fill from LinkedIn. --></td>
             </tr>
             <tr>
-              <td><span class="name-cell"><img class="avatar" src="images/people/ashley-nichols.jpg" alt="Ashley Nichols"><span>Ashley Nichols, PhD</span></span></td>
+              <td><span class="name-cell"><span class="avatar-mono">AN</span><span>Ashley Nichols, PhD</span></span></td>
               <td>Graduate Student</td><td class="years">2022–2026</td><td>Postdoctoral Fellow, Sanjana lab, New York University</td>
             </tr>
             <tr>
@@ -222,7 +234,7 @@
               <td>Research Technician</td><td class="years">2022–2023</td><td>PhD student, Rockefeller University, Rock lab</td>
             </tr>
             <tr>
-              <td><span class="name-cell"><img class="avatar" src="images/people/ausrine-ruzgaite.jpg" alt="Ausrine Ruzgaite"><span>Ausrine Ruzgaite</span></span></td>
+              <td><span class="name-cell"><span class="avatar-mono">AR</span><span>Ausrine Ruzgaite</span></span></td>
               <td>Research Technician</td><td class="years">2024–2026</td><td>PhD student, Institut Curie, Fachinetti lab</td>
             </tr>
           </tbody>
