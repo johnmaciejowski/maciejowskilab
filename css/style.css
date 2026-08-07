@@ -54,15 +54,11 @@ header nav {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px 24px;
-  padding: 20px 32px;
+  padding: 18px 32px;
 }
-header nav::before {
-  content: "Maciejowski Lab";
-  font-weight: 600;
-  font-size: 18px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
+.brand { display: inline-flex; align-items: center; flex-shrink: 0; }
+.brand svg { height: 26px; width: auto; display: block; }
+.brand:hover { text-decoration: none; }
 header nav ul {
   list-style: none;
   margin: 0;
@@ -79,6 +75,10 @@ header nav a { color: var(--muted); }
 header nav a:hover { color: var(--accent); text-decoration: none; }
 
 /* ---- Layout ------------------------------------------------------------ */
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.page-head-mark { flex-shrink: 0; margin-top: 56px; }
+.page-head-mark svg { width: 52px; height: 52px; display: block; }
+@media (max-width: 640px) { .page-head-mark { margin-top: 40px; } .page-head-mark svg { width: 40px; height: 40px; } }
 .container {
   max-width: 1080px;
   margin: 0 auto;
@@ -236,20 +236,11 @@ tbody td:last-child { padding-right: 0; }
 .hero-placeholder { aspect-ratio: 2 / 1; margin: 24px 0; }
 
 /* ---- Home -------------------------------------------------------------- */
-.home-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 44px;
-  align-items: center;
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 8px 32px 4px;
-  border-bottom: 1px solid var(--line);
-}
-.home-statement { padding: 44px 0; }
-.home-statement .eyebrow { margin: 0 0 22px; }
-.home-statement p:last-child { margin: 0; font-size: 18.5px; line-height: 1.6; }
-.home-hero-media { border: 1px solid var(--line); min-height: 400px; aspect-ratio: auto; margin: 0; }
+.home-banner { max-width: 1080px; margin: 0 auto; padding: 24px 32px 0; }
+.home-banner img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+.home-intro { padding: 40px 0 8px; }
+.home-intro .eyebrow { margin: 0 0 20px; }
+.home-intro p:last-child { margin: 0; max-width: 46em; font-size: 18.5px; line-height: 1.6; }
 
 .home-section { margin-top: 52px; }
 .home-section > h2 + * { margin-top: 24px; }
@@ -267,11 +258,13 @@ tbody td:last-child { padding-right: 0; }
 }
 .research-card {
   background: var(--paper);
-  padding: 26px 24px 30px;
+  padding: 24px 24px 30px;
   display: flex; flex-direction: column; gap: 12px;
   color: var(--ink);
 }
 .research-card:hover { background: #fafbfc; text-decoration: none; }
+.research-card-head { display: flex; align-items: center; justify-content: space-between; }
+.research-card-head svg { width: 40px; height: 40px; display: block; }
 .research-card .research-num { font-family: var(--mono); font-size: 12px; color: var(--accent); }
 .research-card h3 { font-size: 19px; }
 .research-card p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted); }
@@ -286,6 +279,8 @@ tbody td:last-child { padding-right: 0; }
 .home-join p { max-width: 46em; }
 
 /* ---- Research article -------------------------------------------------- */
+.page-hero { margin: 24px 0 8px; }
+.page-hero img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: cover; object-position: center 42%; border: 1px solid var(--line); }
 .article-lede { font-size: 20px; line-height: 1.6; color: var(--ink); max-width: 40em; }
 .prose > p { font-size: 16.5px; line-height: 1.68; margin: 16px 0 0; max-width: 42em; }
 .prose > p:first-child { margin-top: 0; }
@@ -442,9 +437,9 @@ tbody td:last-child { padding-right: 0; }
   #site-footer address { padding: 28px 20px; }
   .pub-list li { grid-template-columns: 28px 1fr; gap: 12px; }
   .pub-links { margin-left: 0; margin-top: 6px; display: flex; }
-  .home-hero { grid-template-columns: 1fr; gap: 0; padding: 0 20px; }
-  .home-statement { padding: 32px 0; }
-  .home-statement p:last-child { font-size: 17px; }
-  .home-hero-media { min-height: 220px; margin-bottom: 8px; }
+  .home-banner { padding: 16px 20px 0; }
+  .home-intro { padding: 28px 0 4px; }
+  .home-intro p:last-child { font-size: 17px; }
   .research-cards { grid-template-columns: 1fr; }
+  .brand svg { height: 22px; }
 }

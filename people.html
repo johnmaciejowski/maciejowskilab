@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>People — Maciejowski Lab</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="favicon.svg">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SVKRLTYJR9"></script>
   <script>
@@ -17,6 +18,15 @@
 <body>
   <header>
     <nav>
+      <a class="brand" href="index.html" aria-label="Maciejowski Lab — home">
+        <svg viewBox="0 0 300 52" role="img" aria-label="Maciejowski Lab" style="overflow:visible;">
+          <clipPath id="wm-t"><rect x="-20" y="0" width="360" height="24"/></clipPath>
+          <clipPath id="wm-b"><rect x="-20" y="28" width="360" height="28"/></clipPath>
+          <g clip-path="url(#wm-t)"><text x="0" y="40" font-family="system-ui,Arial,sans-serif" font-weight="600" font-size="40" letter-spacing="-1.5" fill="#111214">Maciejowski Lab</text></g>
+          <g clip-path="url(#wm-b)"><text x="6" y="40" font-family="system-ui,Arial,sans-serif" font-weight="600" font-size="40" letter-spacing="-1.5" fill="#111214">Maciejowski Lab</text></g>
+          <line x1="-2" y1="26" x2="288" y2="26" stroke="#2f52c9" stroke-width="2.5"/>
+        </svg>
+      </a>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="people.html">People</a></li>
@@ -99,6 +109,7 @@
       </article>
 
       <article class="bio">
+        <!-- Marton's studio headshot. -->
         <img class="portrait" src="images/people/marton-kovacs.jpg" alt="Marton Kovacs">
         <div class="body">
           <h3>Marton Kovacs, PhD</h3>
@@ -159,13 +170,12 @@
       </article>
 
       <article class="bio">
-        <!-- Adonis's spirit vegetable still pending. -->
         <img class="portrait" src="images/people/adonis-john.jpg" alt="Adonis John">
         <div class="body">
           <h3>Adonis John</h3>
           <div class="meta">Lead, Research Administrative Assistant · she/her</div>
           <p>Adonis keeps the lab running, which is closer to herding cats than the title suggests. She places orders, organizes equipment purchases and maintenance, arranges travel and conferences, and keeps morale up. We would be nothing without her.</p>
-          <p class="flag">TODO: reshoot headshot to match studio set; spirit vegetable pending.</p>
+          <div class="veg"><span class="label">spirit vegetable</span> potato</div>
         </div>
       </article>
 

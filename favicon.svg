@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <clipPath id="t"><rect x="-20" y="0" width="140" height="47"></rect></clipPath>
+  <clipPath id="b"><rect x="-20" y="53" width="140" height="47"></rect></clipPath>
+  <g clip-path="url(#t)"><text x="43" y="76" text-anchor="middle" font-family="system-ui,Arial,sans-serif" font-weight="700" font-size="96" letter-spacing="-3" fill="#111214">M</text></g>
+  <g clip-path="url(#b)"><text x="54" y="76" text-anchor="middle" font-family="system-ui,Arial,sans-serif" font-weight="700" font-size="96" letter-spacing="-3" fill="#111214">M</text></g>
+  <line x1="6" y1="50" x2="94" y2="50" stroke="#2f52c9" stroke-width="5"></line>
+</svg>
