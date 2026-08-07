@@ -61,9 +61,9 @@ def entry(p, pmid, indent):
     if p.get("detail"):
         cite += ";" + p["detail"]
     cite += "."
-    links = '<a class="pub-link" href="https://doi.org/%s">DOI</a>' % p["doi"]
+    links = '<a class="pub-link" target="_blank" rel="noopener" href="https://doi.org/%s">DOI</a>' % p["doi"]
     if pmid:
-        links += '<a class="pub-link" href="https://pubmed.ncbi.nlm.nih.gov/%s/">PubMed %s</a>' % (pmid, pmid)
+        links += '<a class="pub-link" target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/%s/">PubMed %s</a>' % (pmid, pmid)
     return ('%s<li><span class="pub-cite">%s</span>'
             '<span class="pub-links">%s</span></li>') % (indent, cite, links)
 
