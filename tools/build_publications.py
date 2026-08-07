@@ -55,9 +55,9 @@ def year_desc(items):
     return sorted(items, key=lambda p: -p["year"])
 
 
-def entry(p, pmid, indent):
+def entry(p, pmid, indent, authors=None):
     cite = "%s. %s. <em class=\"pub-venue\">%s</em> %s" % (
-        p["authors"], p["title"], p["venue"], p["year"])
+        authors or p["authors"], p["title"], p["venue"], p["year"])
     if p.get("detail"):
         cite += ";" + p["detail"]
     cite += "."
@@ -99,6 +99,17 @@ def build_home_body(data, pmids, limit=3):
     return "\n".join(L)
 
 
+def build_selected(sel, pmids, by_doi):
+    L = ["            <!-- STATIC HTML generated from publications.json (single source of truth).",
+         "                 Curated order; regenerate with the build step, do not hand-edit. -->"]
+    for item in sel:
+        doi = item["doi"]
+        if doi not in by_doi:
+            sys.exit("selected doi not in publications: %s" % doi)
+        L.append(entry(by_doi[doi], pmids.get(doi), "            ", item.get("authors")))
+    return "\n".join(L)
+
+
 def splice(path, open_tag_re, close, body):
     html = open(path, encoding="utf-8").read()
     pat = re.compile("(" + open_tag_re + r"\n).*?(\n" + re.escape(close) + ")", re.DOTALL)
@@ -121,6 +132,12 @@ def main():
     print("publications: %d entries, %d with PMIDs" % (len(data["publications"]), got))
     print("publications.html %s | index.html %s" % (
         "updated" if c1 else "unchanged", "updated" if c2 else "unchanged"))
+
+    by_doi = {p["doi"]: p for p in data["publications"]}
+    for page, sel in data.get("selected", {}).items():
+        ch = splice(os.path.join(ROOT, page), r'<ol class="selected-pubs">',
+                    "          </ol>", build_selected(sel, pmids, by_doi))
+        print("%s (%d selected) %s" % (page, len(sel), "updated" if ch else "unchanged"))
 
 
 if __name__ == "__main__":
