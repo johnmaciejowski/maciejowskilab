@@ -8,6 +8,8 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
   // Stable sort, most recent year first.
   function byYearDesc(items) {
     return items
@@ -17,16 +19,19 @@
   }
 
   function entryHTML(p) {
-    var s = esc(p.authors) + '. ' + esc(p.title) + '. <em>' + esc(p.venue) + '</em> ' + p.year;
+    var s = '<span class="pub-cite">' +
+      esc(p.authors) + '. ' + esc(p.title) + '. ' +
+      '<em class="pub-venue">' + esc(p.venue) + '</em> ' + p.year;
     if (p.detail) s += ';' + esc(p.detail);
-    s += '.';
+    s += '.</span>';
+    var links = '';
     if (p.doi) {
-      var url = 'https://doi.org/' + p.doi;
-      s += ' <a href="' + esc(url) + '">' + esc(url) + '</a>';
+      links += '<a class="pub-link" href="https://doi.org/' + esc(p.doi) + '">DOI</a>';
     }
     if (p.pmid) {
-      s += ' <a href="https://pubmed.ncbi.nlm.nih.gov/' + esc(p.pmid) + '/">PubMed ' + esc(p.pmid) + '</a>';
+      links += '<a class="pub-link" href="https://pubmed.ncbi.nlm.nih.gov/' + esc(p.pmid) + '/">PubMed ' + esc(p.pmid) + '</a>';
     }
+    if (links) s += '<span class="pub-links">' + links + '</span>';
     return s;
   }
 
@@ -46,13 +51,22 @@
     var el = (typeof target === 'string') ? document.getElementById(target) : target;
     if (!el || !DATA) return;
     el.innerHTML = '';
+    var n = 0;
     DATA.sections.forEach(function (sec) {
       var items = DATA.items.filter(function (p) { return p.section === sec.id; });
       if (!items.length) return;
+      n += 1;
+      var section = document.createElement('section');
+      section.className = 'pub-section';
+      section.id = sec.id;
       var h2 = document.createElement('h2');
-      h2.textContent = sec.label;
-      el.appendChild(h2);
-      el.appendChild(listOf(items));
+      h2.className = 'pub-h';
+      h2.innerHTML = '<span class="pub-num">' + pad2(n) + '</span>' +
+        '<span class="pub-label">' + esc(sec.label) + '</span>' +
+        '<span class="pub-count">' + items.length + '</span>';
+      section.appendChild(h2);
+      section.appendChild(listOf(items));
+      el.appendChild(section);
     });
   };
 

@@ -28,43 +28,53 @@
     </nav>
   </header>
 
-  <main class="container">
-    <h1>Maciejowski Lab</h1>
-    <p><em>Sloan Kettering Institute, Memorial Sloan Kettering Cancer Center</em></p>
-
-    <!-- TODO: hero image -->
-    <div id="hero" class="hero-placeholder"></div>
-
-    <p>Genomic instability puts DNA where it does not belong. Chromosomes are mis-segregated, telomeres fail, and broken chromosomes fuse and break again, and each of these leaves DNA in the wrong place or the wrong state inside the cell. From that common origin the lab follows two questions. The first is what happens when a cell finds its own DNA loose in the cytoplasm, where it reads as a sign of infection, and how tumors learn to suppress the response that follows. The second is what instability writes into the genome and leaves behind, from characteristic patterns of mutation to oncogenes amplified onto circles of DNA that float free of the chromosomes. Across both we want to understand how cancer cells exploit the consequences of their own instability, and to turn that understanding into something treatable.</p>
-
-    <section>
-      <h2>Research</h2>
-      <!-- TODO: render the three cards below as linked cards -->
-      <article>
-        <h3><a href="research/ecdna.html">Extrachromosomal DNA</a></h3>
-        <p>Oncogenes amplified on circular DNA that has no centromere, and how those circles survive cell division anyway.</p>
-      </article>
-      <article>
-        <h3><a href="research/apobec3a.html">APOBEC3A mutagenesis</a></h3>
-        <p>An enzyme responsible for a large share of the point mutations in human cancer, and the rare cell state that switches it on.</p>
-      </article>
-      <article>
-        <h3><a href="research/immunity.html">Genomic instability and innate immunity</a></h3>
-        <p>How cells detect their own DNA when it escapes into the cytoplasm, and how tumors keep that from happening.</p>
-      </article>
+  <main>
+    <section class="home-hero">
+      <div class="home-statement">
+        <p class="eyebrow">Sloan Kettering Institute · Memorial Sloan Kettering Cancer Center</p>
+        <p>Genomic instability puts DNA where it does not belong. Chromosomes are mis-segregated, telomeres fail, and broken chromosomes fuse and break again, and each of these leaves DNA in the wrong place or the wrong state inside the cell. From that common origin the lab follows two questions. The first is what happens when a cell finds its own DNA loose in the cytoplasm, where it reads as a sign of infection, and how tumors learn to suppress the response that follows. The second is what instability writes into the genome and leaves behind, from characteristic patterns of mutation to oncogenes amplified onto circles of DNA that float free of the chromosomes. Across both we want to understand how cancer cells exploit the consequences of their own instability, and to turn that understanding into something treatable.</p>
+      </div>
+      <!-- TODO: hero image — wide microscopy, ≥2400×1200, survives a wide crop, reads without a caption -->
+      <div id="hero" class="home-hero-media hero-placeholder" role="img" aria-label="Microscopy image (pending)"></div>
     </section>
 
-    <section>
-      <h2>Recent work</h2>
-      <!-- TODO: render the three most recent entries from publications.json -->
-      <div id="recent-publications"></div>
-      <p><a href="publications.html">All publications →</a></p>
-    </section>
+    <div class="container">
+      <section class="home-section">
+        <h2>Research</h2>
+        <div class="research-cards">
+          <a class="research-card" href="research/ecdna.html">
+            <span class="research-num">01</span>
+            <h3>Extrachromosomal DNA</h3>
+            <p>Oncogenes amplified on circular DNA that has no centromere, and how those circles survive cell division anyway.</p>
+          </a>
+          <a class="research-card" href="research/apobec3a.html">
+            <span class="research-num">02</span>
+            <h3>APOBEC3A mutagenesis</h3>
+            <p>An enzyme responsible for a large share of the point mutations in human cancer, and the rare cell state that switches it on.</p>
+          </a>
+          <a class="research-card" href="research/immunity.html">
+            <span class="research-num">03</span>
+            <h3>Genomic instability and innate immunity</h3>
+            <p>How cells detect their own DNA when it escapes into the cytoplasm, and how tumors keep that from happening.</p>
+          </a>
+        </div>
+      </section>
 
-    <section>
-      <h2>Join the lab</h2>
-      <p>We take rotation students, postdocs, and research technicians. Current rotation projects and what to send are on the <a href="join.html">Join</a> page.</p>
-    </section>
+      <section class="home-section">
+        <div class="home-section-head">
+          <h2>Recent work</h2>
+          <a class="home-more" href="publications.html">All publications &rarr;</a>
+        </div>
+        <div id="recent-publications">
+          <noscript><p>Recent publications require JavaScript. See <a href="publications.html">all publications</a>.</p></noscript>
+        </div>
+      </section>
+
+      <section class="home-section home-join">
+        <h2>Join the lab</h2>
+        <p>We take rotation students, postdocs, and research technicians. Current rotation projects and what to send are on the <a href="join.html">Join</a> page.</p>
+      </section>
+    </div>
   </main>
 
   <footer id="site-footer"></footer>

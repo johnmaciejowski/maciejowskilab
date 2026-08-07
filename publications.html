@@ -30,7 +30,26 @@
 
   <main class="container">
     <h1>Publications</h1>
-    <div id="all-publications"></div>
+    <p>A complete list is on <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Maciejowski+J">PubMed</a> and <a href="https://scholar.google.com/citations?user=Maciejowski">Google Scholar</a>. Each entry below links to its DOI and PubMed record.</p>
+
+    <div class="pub-layout">
+      <aside class="pub-toc" aria-label="Sections">
+        <div class="pub-toc-head">Contents</div>
+        <ol>
+          <li><a href="#preprints"><span class="pub-num">01</span> Preprints</a></li>
+          <li><a href="#lab"><span class="pub-num">02</span> Maciejowski Lab</a></li>
+          <li><a href="#reviews"><span class="pub-num">03</span> Reviews and commentaries</a></li>
+          <li><a href="#postdoc"><span class="pub-num">04</span> Postdoctoral work</a></li>
+          <li><a href="#earlier"><span class="pub-num">05</span> Graduate and earlier work</a></li>
+        </ol>
+      </aside>
+
+      <div id="publications" class="pub-body">
+        <!-- Rendered from js/publications-data.js via js/publications.js.
+             Single source: edit publications.json and regenerate; do not hand-edit here. -->
+        <noscript><p>Publication list requires JavaScript. See the <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Maciejowski+J">PubMed listing</a>.</p></noscript>
+      </div>
+    </div>
   </main>
 
   <footer id="site-footer"></footer>
@@ -38,6 +57,6 @@
   <script src="js/publications-data.js"></script>
   <script src="js/publications.js"></script>
   <script src="js/footer.js"></script>
-  <script>window.renderAllPublications && renderAllPublications('all-publications');</script>
+  <script>window.renderAllPublications && renderAllPublications('publications');</script>
 </body>
 </html>
